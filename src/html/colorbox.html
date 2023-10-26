@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../dist/output.css" />
+  </head>
+  <body>
+    <div class="w-40 h-40 border-2"></div>
+    <button data-color="red" id="js_red" class="w-10 h-5 bg-rose-600">click</button>
+    <button data-color="blue" id="js_blue" class="w-10 h-5 bg-blue-900">click</button>
+    <button data-color="green" id="js_green" class="w-10 h-5 bg-green-400">click</button>
+
+    <script>
+      let color = document.querySelector("div");
+      let red = document.querySelector("#js_red");
+      let blue = document.querySelector("#js_blue");
+      let green = document.querySelector("#js_green");
+
+      red.addEventListener("click", () => {
+        color.style.backgroundColor = "red";
+      });
+      blue.addEventListener("click", () => {
+        color.style.backgroundColor = "blue";
+      });
+      green.addEventListener("click", () => {
+        color.style.backgroundColor = "green";
+      });
+    </script>
+  </body>
+</html>
