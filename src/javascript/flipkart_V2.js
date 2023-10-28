@@ -463,5 +463,80 @@ const darkMode = () => {
   html.setAttribute("class", mode ? "dark" : "");
   mode = mode ? 0 : 1;
 };
+let body = document.body;
+body.classList.add("dark:bg-slate-800")
 
 togglebtn.addEventListener("click", darkMode);
+
+
+// main body part start
+document.addEventListener("DOMContentLoaded", function() {
+  
+const tabelObj = {
+  tableInput: document.getElementById("input_js"),
+  tabelbody: document.getElementById("tbody_js"),
+
+  addInput: function () {
+    if (this.tableInput.value.trim()) {
+      // create tbody and append in tabel
+      // let tabelbody = document.createElement("tbody");
+      // this.tabelContainer.appendChild(tabelbody);
+
+      let tabelrow = document.createElement("tr");
+      this.tabelbody.appendChild(tabelrow);
+
+      let tabelCell1 = document.createElement("td");
+      tabelCell1.setAttribute("class","p-2 text-center bg-gray-50 font-semibold border-b")
+      tabelrow.appendChild(tabelCell1);
+      
+      // insert the value of input in cell1
+      tabelCell1.innerHTML = this.tableInput.value;
+
+      let tabelCell2 = document.createElement("td");
+      tabelCell2.classList.add("border", "text-center", "space-x-5","bg-gray-100");
+      tabelrow.appendChild(tabelCell2);
+      
+
+      //now create complete button in cell2
+      let completeBtn = document.createElement("button");
+
+      completeBtn.setAttribute("class" , "border rounded px-2");
+      completeBtn.textContent = "completed";
+
+      tabelCell2.appendChild(completeBtn);
+
+      //now create delete button in cell2
+      let deleteBtn = document.createElement("button");
+      deleteBtn.classList.add("border", "bg-gray-200", "rounded", "px-2");
+      deleteBtn.textContent = "delete";
+
+      tabelCell2.appendChild(deleteBtn);
+
+      deleteBtn.addEventListener("click", function () {
+        tabelbody.removeChild(tabelrow);
+      });
+
+      let mode = 1;
+      const onChange = () => {
+        tabelCell1.setAttribute("class", mode ? "line-through p-2 text-center bg-gray-50 font-semibold border-b" : "p-2 text-center bg-gray-50 font-semibold border-b")
+        completeBtn.innerHTML = mode ? "incompleted" : "completed";
+        completeBtn.setAttribute("class", mode? "border rounded bg-red-300 px-2": "border rounded bg-green-300 px-2")
+        mode = mode ? 0 : 1;
+      };
+
+      completeBtn.addEventListener("click", onChange);
+
+      this.tableInput.value = "";
+    }
+  },
+};
+
+document.querySelector("#select_btn").addEventListener("click", function (event) {
+  event.preventDefault();
+  tabelObj.addInput.bind(tabelObj)();
+});
+});
+
+
+
+

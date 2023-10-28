@@ -1,12 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" id="js_dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../../dist/output.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../../dist/output.css" />
+  </head>
+  <body>
     <script src="../javascript/flipkart_V2.js"></script>
-</body>
+    <div class="w-full flex justify-center items-center p-1 mt-4">
+      <form id="form_js" action="#">
+        <label for="input">UserName</label>
+        <input
+          type="text"
+          name="name"
+          id="input_js"
+          placeholder="Enter Name"
+          class="text-sm border-2 text-white bg-white rounded pl-2 focus:outline-none focus:bg-white focus:text-gray-900"
+        />
+        <button
+          id="select_btn"
+          class="border-2 bg-slate-200 rounded px-1"
+          type="submit"
+        >
+          &plus;
+        </button>
+      </form>
+    </div>
+    <div class="flex justify-center mt-8">
+      <table class="w-full max-w-2xl border-2" id="tabel_container">
+        <thead>
+          <tr>
+            <th class="border-2">Name</th>
+            <th class="w-1/2 border-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody_js"></tbody>
+      </table>
+    </div>
+  </body>
 </html>
