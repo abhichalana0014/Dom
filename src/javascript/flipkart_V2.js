@@ -548,7 +548,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   const addValue = () => {
-    let inputValue = document.getElementById("inputValue").value;
+    let inputValue = document.getElementById("inputValue").value.trim();
   
     if (inputValue) {
       const newItem = {
@@ -561,6 +561,9 @@ document.addEventListener("DOMContentLoaded", function() {
       saveToLocalStorage();
       updateTable();
       document.getElementById("inputValue").value = "";
+    }
+    else if(inputValue == ""){
+      alert("Enter a Task")
     }
   };
   
@@ -598,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let searchValue = document.getElementById("search_bar_js");
     searchValue.addEventListener("input", function () {
       let matchData = storedData.filter((item) =>
-      item.value.toLowerCase().startsWith(searchValue.value.trim())
+      item.value.toLowerCase().startsWith(searchValue.value)
       );
       updateTable(matchData);
       saveToLocalStorage();
@@ -638,9 +641,9 @@ document.addEventListener("DOMContentLoaded", function() {
         );
       }
 
-      if (searchValue.value.trim() !== "") {
+      if (searchValue.value !== "") {
         matchData = matchData.filter((item) =>
-          item.value.toLowerCase().startsWith(searchValue.value.trim())
+          item.value.toLowerCase().startsWith(searchValue.value)
         );
       }
 
