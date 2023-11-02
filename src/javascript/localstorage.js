@@ -42,6 +42,7 @@ let storedData = JSON.parse(localStorage.getItem("data")) || [];
       let deleteButton = document.createElement("button");
       deleteButton.classList.add("border", "bg-gray-200", "rounded", "px-2");
       deleteButton.textContent = "Delete";
+      deleteButton.type = "button";
       deleteButton.addEventListener("click", function () {
         deleteRow(item.id);
       });

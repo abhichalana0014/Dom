@@ -516,6 +516,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let deleteButton = document.createElement("button");
       deleteButton.classList.add("border", "bg-gray-200", "rounded", "px-2");
       deleteButton.textContent = "Delete";
+      deleteButton.type = "button";
       deleteButton.addEventListener("click", function () {
         deleteRow(item.id);
       });
@@ -524,6 +525,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let completeBtn = document.createElement("button");
   
       completeBtn.classList.add("border", "rounded", "px-2" , "w-full");
+      completeBtn.type = "button";
       completeBtn.classList.add(item.bgColor);
       completeBtn.textContent =
         item.taskStatus === "Incompleted" ? "Incompleted" : "Completed";
