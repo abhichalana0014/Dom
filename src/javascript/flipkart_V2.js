@@ -526,13 +526,13 @@ document.addEventListener("DOMContentLoaded", function() {
       completeBtn.classList.add("border", "rounded", "px-2" , "w-full");
       completeBtn.classList.add(item.bgColor);
       completeBtn.textContent =
-        item.taskStatus === "Incomplete" ? "Incomplete" : "Complete";
+        item.taskStatus === "Incompleted" ? "Incompleted" : "Completed";
   
       completeBtn.addEventListener("click", function () {
         onChange(item, cell1, completeBtn);
       });
   
-      if (item.taskStatus.toLowerCase() === "complete") {
+      if (item.taskStatus.toLowerCase() === "completed") {
         cell1.classList.add("line-through");
       }
   
@@ -552,10 +552,10 @@ document.addEventListener("DOMContentLoaded", function() {
       const newItem = {
         id: Date.now(),
         value: inputValue,
-        taskStatus: "Incomplete",
+        taskStatus: "Incompleted",
         bgColor: "bg-red-200",
       };
-      storedData.push(newItem);
+      storedData.unshift(newItem);
       saveToLocalStorage();
       updateTable();
       document.getElementById("inputValue").value = "";
@@ -571,30 +571,32 @@ document.addEventListener("DOMContentLoaded", function() {
   
   const onChange = (item, cell1, completeBtn) => {
     let action;
-    if (item.taskStatus.toLowerCase() === "complete") {
-      item.taskStatus = "Incomplete";
+    if (item.taskStatus.toLowerCase() === "completed") {
+      item.taskStatus = "Incompleted";
       cell1.classList.remove("line-through");
       completeBtn.classList.remove(item.bgColor);
       item.bgColor = "bg-red-200";
       completeBtn.classList.add(item.bgColor);
-      action = "Incomplete";
+      action = "Incompleted";
     } else {
-      item.taskStatus = "Complete";
+      item.taskStatus = "Completed";
       cell1.classList.add("line-through");
       completeBtn.classList.remove(item.bgColor);
       item.bgColor = "bg-green-200";
       completeBtn.classList.add(item.bgColor);
-      action = "Complete";
+      action = "Completed";
     }
     completeBtn.textContent = action;
     saveToLocalStorage();
   };
+
+
   
   const searchfilter = () => {
     let searchValue = document.getElementById("search_bar_js");
     searchValue.addEventListener("input", function () {
       let matchData = storedData.filter((item) =>
-        item.value.toLowerCase().startsWith(searchValue.value.trim())
+      item.value.toLowerCase().startsWith(searchValue.value.trim())
       );
       updateTable(matchData);
       saveToLocalStorage();
@@ -602,22 +604,51 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
   
-  const filterTasks = (opt) => {
+  const filterTasks = () => {
     let filterOptions = document.getElementById("underline_select");
-  
+    
     filterOptions.addEventListener("change", function () {
-      if (filterOptions.value.toLowerCase() === "assign") {
+      if (filterOptions.value.toLowerCase() === "all") {
         updateTable(storedData);
       } else if (filterOptions.value.toLowerCase() === "completed") {
         let complete = storedData.filter(
-          (item) => item.taskStatus.toLowerCase() === "complete"
-        );
-        updateTable(complete);
-      } else if (filterOptions.value.toLowerCase() === "incomplete"){
-        let incomplete = storedData.filter((item)=> item.taskStatus.toLowerCase() === "incomplete")
-        updateTable(incomplete)
-      }
+          (item) => item.taskStatus.toLowerCase() === "completed"
+          );
+          updateTable(complete);
+        } else if (filterOptions.value.toLowerCase() === "incompleted"){
+          let incomplete = storedData.filter((item)=> item.taskStatus.toLowerCase() === "incomplete")
+          updateTable(incomplete)
+        }
     });
+  };
+  
+  const filterAndSearch = () => {
+    let filterOptions = document.getElementById("underline_select");
+    let searchValue = document.getElementById("search_bar_js");
+
+    function applyFilters() {
+      let selectedValue = filterOptions.value.toLowerCase();
+      let matchData = storedData;
+
+      if (selectedValue !== "all") {
+        matchData = storedData.filter(
+          (item) => item.taskStatus.toLowerCase() === selectedValue
+        );
+      }
+
+      if (searchValue.value.trim() !== "") {
+        matchData = matchData.filter((item) =>
+          item.value.toLowerCase().startsWith(searchValue.value.trim())
+        );
+      }
+
+      updateTable(matchData);
+      saveToLocalStorage();
+    }
+
+    filterOptions.addEventListener("change", applyFilters);
+
+    searchValue.addEventListener("input", applyFilters);
   };
   
   const saveToLocalStorage = () => {
@@ -627,6 +658,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTable();
     searchfilter();
     filterTasks();
+    filterAndSearch();
   };
   
 });
