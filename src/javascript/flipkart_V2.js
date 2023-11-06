@@ -484,7 +484,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
   function updateTable(taskList = storedData) {
     tableBody.innerHTML = "";
-    taskList.forEach((item, index) => {
+    taskList.map((item, index) => {
       let row = tableBody.insertRow();
       let cell0 = row.insertCell(0);
       let cell1 = row.insertCell(1);
@@ -564,14 +564,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     else if(inputValue == ""){
       alert("Enter a Task")
+      document.getElementById("inputValue").value = "";
     }
   };
   
   const deleteRow = (id) => {
     storedData = storedData.filter((item) => item.id !== id);
     //   localStorage.setItem("data", JSON.stringify(storedData));
+    let currnefilter = document.getElementById("underline_select").value.toLowerCase().trim();
+
+    if(currnefilter === "incompleted"){
+      let incomplete = storedData.filter((item)=> item.taskStatus.toLowerCase() === "incompleted");
+      updateTable(incomplete);
+    }
+    else if(currnefilter === "completed"){
+      let complete = storedData.filter((item)=> item.taskStatus.toLowerCase() === "completed");
+      updateTable(complete);
+    }
+    else{
+      updateTable(storedData);
+    }
     saveToLocalStorage();
-    updateTable();
+    // updateTable();
   };
   
   const onChange = (item, cell1, completeBtn) => {
