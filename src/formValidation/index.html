@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="../../dist/output.css" />
+  </head>
+  <body class="h-screen">
+    <div class="flex items-center justify-center min-h-screen">
+      <div
+        class="border-2 rounded-md h-full shadow-md px-8 py-4 w-full max-w-xl"
+      >
+        <form
+          action="/myphp.php"
+          name="myForm"
+          onsubmit="return validateForm(event)"
+          method="post"
+          novalidate
+        >
+          <h2 class="text-2xl text-center mb-6">SignUp Here</h2>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="fname">Name:</label>
+            <div class="w-full" id="name">
+              <input
+                class="rounded outline-none px-2 py-0.5 border w-full"
+                type="text"
+                name="fname"
+                id="fname"
+              />
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="femail">Email:</label>
+            <div class="w-full" id="email">
+              <input
+                class="rounded outline-none px-2 py-0.5 border w-full"
+                type="email"
+                name="femail"
+                id="femail"
+              />
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="fphone">Phone:</label>
+            <div class="w-full" id="phone">
+              <input
+                class="rounded outline-none px-2 py-0.5 border w-full"
+                type="number"
+                name="fnumber"
+                id="fphone"
+              />
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="fgender">gender</label>
+            <div class="w-full" id="gender">
+              <select
+                class="rounded outline-none px-2 text-base py-0.5 border w-full"
+                name="fgender"
+                id="gender_select"
+              >
+                <option value="">Select your gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+          <div class="flex mb-4">
+            <fieldset class="flex w-full">
+              <div class="flex w-full gap-4" id="age">
+                <legend class="w-full">Age 18+</legend>
+                <div class="flex justify-between w-full ml-3 gap-10" >
+                  <div>
+                    <input type="radio" name="fage" id="ageyes" value="yes" />
+                    <label for="ageyes">yes</label>
+                  </div>
+                  <div>
+                    <input type="radio" name="fage" id="ageno" value="no" />
+                    <label for="ageno">No</label>
+                  </div>
+                </div>
+                <div class="formErrors w-full text-red-500"></div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="fpass">Password:</label>
+            <div class="w-full" id="pass">
+              <input
+                class="rounded outline-none px-2 py-0.5 border w-full"
+                type="password"
+                name="fpass"
+                id="fpass"
+              />
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+          <div class="w-full flex mb-4">
+            <label class="w-1/2" for="fcpass">ConfirmPassword:</label>
+            <div class="w-full" id="cpass">
+              <input
+                class="rounded outline-none px-2 py-0.5 border w-full"
+                type="password"
+                name="fcpass"
+                id="fcpass"
+              />
+              <div class="formErrors text-red-500"></div>
+            </div>
+          </div>
+
+          <div class="w-full flex justify-center">
+            <input
+              class="bg-blue-500 text-white py-2 rounded w-1/2 max-w-sm"
+              type="submit"
+              value="submit"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    const setErrors = (id, error) => {
+      const element = document.getElementById(id);
+      element.getElementsByClassName("formErrors")[0].innerHTML = error;
+    };
+    const validateForm = (event) => {
+      event.preventDefault();
+      let returnVal = true;
+
+      // name Validation
+      let name = document.forms["myForm"]["fname"].value;
+      if (name.length === 0) {
+        setErrors("name", "*Enter your Name");
+        returnVal = false;
+      } else if (name.length < 4) {
+        setErrors("name", "*Length of name is too short");
+        returnVal = false;
+      } else {
+        setErrors("name", "");
+      }
+
+      //Email Validation
+      let email = document.forms["myForm"]["femail"].value;
+      if (email.length === 0) {
+        setErrors("email", "*Enter your Email");
+        returnVal = false;
+      } else {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!email.match(emailRegex)) {
+          setErrors("email", "*Invalid email format");
+          returnVal = false;
+        } else {
+          setErrors("email", "");
+        }
+      }
+
+      //phone valdation
+      let phone = document.forms["myForm"]["fnumber"].value;
+      if (phone.length === 0) {
+        setErrors("phone", "*Enter your Phone number");
+        returnVal = false;
+      } else {
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phone)) {
+          setErrors("phone", "*Invalid phone number format");
+          returnVal = false;
+        } else {
+          setErrors("phone", "");
+        }
+      }
+
+      //gender validation
+      let gender = document.forms["myForm"]["fgender"].value;
+      if (gender.length === 0) {
+        setErrors("gender", "*Select your gender");
+        returnVal = false;
+      } else {
+        setErrors("gender", "");
+      }
+
+      //password validation
+      let password = document.forms["myForm"]["fpass"].value;
+      const passwordRegex =
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
+      if (password.length === 0) {
+        setErrors("pass", "*Enter your Password");
+        returnVal = false;
+      } else if (!password.match(passwordRegex)) {
+        setErrors(
+          "pass",
+          "*Password must be Min 8 char, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
+        );
+        returnVal = false;
+      } else {
+        setErrors("pass", "");
+      }
+
+      // Confirm Password validation
+      let confirmPassword = document.forms["myForm"]["fcpass"].value;
+      if (confirmPassword !== password) {
+        setErrors("cpass", "*Passwords do not match");
+        returnVal = false;
+      } else {
+        setErrors("cpass", "");
+      }
+
+      //age validation
+      let age = document.querySelectorAll('input[name = "fage"]');
+      console.log(age);
+      age.forEach((item) => {
+        if (!document.querySelector('input[name = "fage"]:checked')) {
+          setErrors("age", "Select an option");
+          returnVal = false;
+        }
+      });
+
+      if (returnVal) {
+        document.forms["myForm"].reset();
+      }
+
+      return returnVal;
+    };
+  </script>
+</html>
