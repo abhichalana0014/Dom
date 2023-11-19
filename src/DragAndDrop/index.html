@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" id="js_dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="../../dist/output.css" />
+    </head>
+    <body>
+        <form id="inputForm">
+            <div class="w-full flex justify-center items-center gap-2 p-1 mt-4">
+                <label for="inputValue">TaskName</label>
+                <input
+                    class="text-sm border-2 text-white bg-white rounded py-0.5 pl-2 focus:outline-none focus:bg-white focus:text-gray-900"
+                    type="text"
+                    id="inputValue"
+                    placeholder="Enter your Task"
+                />
+                <button
+                    class="border-2 bg-slate-200 rounded px-1"
+                    type="submit"
+                >
+                    Add Task
+                </button>
+            </div>
+        </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border">
+            <div class="border py-2 w-full">
+                <h2 class="text-center font-medium border-b">All Tasks</h2>
+                <div class="flex item-center justify-between gap-4 mt-2 px-4">
+                    <label for="search_bar_js" class="hidden">searchTask</label>
+                    <input
+                        type="search"
+                        id="search_bar_js"
+                        name="searchTask"
+                        placeholder="Search Task"
+                        class="px-4 rounded-md border w-1/2 outline-none"
+                    />
+                    <div class="flex items-center gap-3">
+                        <label for="underline_select">Filter</label>
+                        <select
+                            id="underline_select"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        >
+                            <option value="All">All</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Incompleted">Incompleted</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4 px-4 flex">
+                    <table class="w-full border-2" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th class="border-2 w-1/5">S.No.</th>
+                                <th class="border-2 w-2/5">Value</th>
+                                <th class="border-2 w-2/5">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="border py-2">
+                <h2 class="text-center font-medium border-b">Pending Tasks</h2>
+                <div class="flex item-center justify-between gap-4 mt-2 px-4">
+                    <label for="search_bar_js1" class="hidden"
+                        >searchTask</label
+                    >
+                    <input
+                        type="search"
+                        id="search_bar_js1"
+                        name="searchTask1"
+                        placeholder="Search Task"
+                        class="px-4 rounded-md border w-1/2 outline-none"
+                    />
+                </div>
+                <div class="mt-4 px-4 flex">
+                    <table class="w-full border-2" id="pendingTableData">
+                        <thead>
+                            <tr>
+                                <th class="border-2 w-1/5">S.No.</th>
+                                <th class="border-2 w-2/5">Value</th>
+                                <th class="border-2 w-2/5">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="border py-2">
+                <h2 class="text-center font-medium border-b">
+                    Completed Tasks
+                </h2>
+                <div class="flex item-center justify-between gap-4 mt-2 px-4">
+                    <label for="search_bar_js2" class="hidden"
+                        >searchTask</label
+                    >
+                    <input
+                        type="search"
+                        id="search_bar_js2"
+                        name="searchTask2"
+                        placeholder="Search Task"
+                        class="px-4 rounded-md border w-1/2 outline-none"
+                    />
+                </div>
+                <div class="mt-4 px-4 flex">
+                    <table class="w-full border-2" id="completedTableData">
+                        <thead>
+                            <tr>
+                                <th class="border-2 w-1/5">S.No.</th>
+                                <th class="border-2 w-2/5">Value</th>
+                                <th class="border-2 w-2/5">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let storedData = JSON.parse(localStorage.getItem("data")) || [];
+                const inputForm = document.getElementById("inputForm");
+                const tableBody = document.getElementById("tableBody");
+
+                inputForm.addEventListener("submit", function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    addValue();
+                });
+
+                function updateTable(taskList = storedData) {
+                    tableBody.innerHTML = "";
+                    taskList.map((item, index) => {
+                        let row = tableBody.insertRow();
+                        row.setAttribute("draggable", "true");
+                        row.setAttribute("data-TaskId", item.id);
+                        row.setAttribute("class", "row cursor-pointer");
+
+                        let cell0 = row.insertCell(0);
+                        let cell1 = row.insertCell(1);
+                        cell1.setAttribute;
+                        let cell2 = row.insertCell(2);
+
+                        let cell2Div1 = document.createElement("div");
+                        let cell2Div2 = document.createElement("div");
+
+                        cell0.setAttribute("class", "text-center border-2");
+                        cell1.setAttribute("class", "text-center border-2");
+                        cell2.setAttribute("class", "text-center border-2");
+
+                        cell0.textContent = index + 1;
+                        cell1.textContent = item.taskvalue;
+
+                        let deleteButton = document.createElement("button");
+                        deleteButton.classList.add(
+                            "bg-gray-200",
+                            "rounded",
+                            "px-2"
+                        );
+                        deleteButton.textContent = "Delete";
+                        deleteButton.type = "button";
+                        deleteButton.addEventListener("click", function () {
+                            deleteRow(item.id);
+                        });
+
+                        cell2.appendChild(deleteButton);
+                    });
+                }
+
+                const addValue = () => {
+                    let inputValue = document
+                        .getElementById("inputValue")
+                        .value.trim();
+
+                    if (inputValue) {
+                        const newItem = {
+                            id: Date.now(),
+                            taskvalue: inputValue,
+                            taskStatus: "assigned",
+                            // bgColor: "bg-red-200",
+                        };
+                        storedData.unshift(newItem);
+                        saveToLocalStorage();
+                        updateTable();
+                        document.getElementById("inputValue").value = "";
+                    } else if (inputValue == "") {
+                        alert("Enter a Task");
+                        document.getElementById("inputValue").value = "";
+                    }
+                };
+
+                const deleteRow = (id) => {
+                    storedData = storedData.filter((item) => item.id !== id);
+
+                    saveToLocalStorage();
+                    updateTable(storedData);
+                };
+
+                const searchfilter = () => {
+                    let searchValue = document.getElementById("search_bar_js");
+                    searchValue.addEventListener("input", function () {
+                        let matchData = storedData.filter((item) =>
+                            item.taskvalue
+                                .toLowerCase()
+                                .startsWith(searchValue.value)
+                        );
+                        updateTable(matchData);
+                        saveToLocalStorage();
+                        // console.log(matchData)
+                    });
+                };
+
+                const dragDrop = () => {
+                    let draggableRows = document.querySelectorAll(".row");
+                    let incompletedTasktable =
+                        document.querySelector("#pendingTableData");
+                    let alltaskTable = document.querySelector("#dataTable");
+                    let completedTasktable = document.querySelector("#completedTableData");
+
+                    let selected = null;
+
+                    completedTasktable.addEventListener("dragover", (e) => {
+                        e.preventDefault();
+                    });
+
+                    completedTasktable.addEventListener("drop", (e) => {
+                        if (selected) {
+                            // Update the task status and save to local storage
+                            let taskId = selected.getAttribute("data-TaskId");
+                            const taskIndex = storedData.findIndex(
+                                (task) => task.id === +taskId
+                            );
+                            storedData[taskIndex].taskStatus = "completed";
+
+                            // Move the row to the incompleted table
+                            completedTasktable.appendChild(selected);
+                            selected = null;
+
+                            saveToLocalStorage();
+                        }
+                    });
+
+                    incompletedTasktable.addEventListener("dragover", (e) => {
+                        e.preventDefault();
+                    });
+
+                    incompletedTasktable.addEventListener("drop", (e) => {
+                        if (selected) {
+                            // Update the task status and save to local storage
+                            let taskId = selected.getAttribute("data-TaskId");
+                            const taskIndex = storedData.findIndex(
+                                (task) => task.id === +taskId
+                            );
+                            storedData[taskIndex].taskStatus = "pending";
+
+                            // Move the row to the incompleted table
+                            incompletedTasktable.appendChild(selected);
+                            selected = null;
+
+                            saveToLocalStorage();
+                        }
+                    });
+
+                    draggableRows.forEach((row) => {
+                        row.addEventListener("dragstart", (e) => {
+                            selected = e.target;
+                        });
+                    });
+                };
+                const saveToLocalStorage = () => {
+                    localStorage.setItem("data", JSON.stringify(storedData));
+                };
+
+                window.onload = function () {
+                    updateTable();
+                    searchfilter();
+                    dragDrop();
+                };
+            });
+        </script>
+    </body>
+</html>

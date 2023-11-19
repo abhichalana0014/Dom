@@ -1,8 +1,5 @@
 // Q Write a function printNumbers(from, to) that outputs a number every second, starting from from and ending with to.
 
-const { reject } = require("any-promise");
-const resolve = require("resolve");
-
 // Make two variants of the solution.
 
 // Using setInterval.
@@ -51,7 +48,7 @@ const job = () => {
   let promise = new Promise((res) => {
     setTimeout(() => {
       res("hello world");
-    }, 2000);
+    }, 9000);
   });
   return promise.then((value) => {
     console.log(value);
@@ -71,17 +68,17 @@ const checkEvenOddNan = (num) => {
     if (isNaN(num) || typeof num === "string") {
       setTimeout(() => {
         reject("not a number");
-      }, 1000);
+      }, 10000);
     }
     if (num % 2 === 0) {
       setTimeout(() => {
         resolve("even");
-      }, 1000);
+      }, 10000);
     }
     if (num % 2 !== 0) {
       setTimeout(() => {
         resolve("odd");
-      }, 1000);
+      }, 10000);
     }
   });
 

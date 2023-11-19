@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+    <link rel="stylesheet" href="../../dist/output.css" />
+  </head>
+  <body>
+    <div class="h-screen flex justify-center items-center">
+      <div class="border-2 shadow-md rounded-md w-full max-w-sm px-4">
+        <form id="quiz">
+          <div>
+            
+          </div>
+          <div class="w-full flex justify-between px-1 mt-5 mb-2">
+            <button class="border px-4 rounded-sm py-1" data-action="prev">
+              prev
+            </button>
+            <button class="border px-4 rounded-sm py-1" data-action="skip">
+              skip
+            </button>
+            <button class="border px-4 rounded-sm py-1" data-action="next">
+              next
+            </button>
+            <button class="border px-4 rounded-sm py-1" id="explicitSubmitBtn">
+              Submit
+            </button>
+          </div>
+          <div id="scoreContainer" style="display: none">
+            <p>Your score is: <span id="score"></span></p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          question: "What is the capital of Japan?",
+          a: "Beijing",
+          b: "Seoul",
+          c: "Tokyo",
+          d: "Bangkok",
+          correctAnswer: "c",
+        },
+        {
+          question: "Which element has the chemical symbol 'O'?",
+          a: "Oxygen",
+          b: "Gold",
+          c: "Osmium",
+          d: "Oganesson",
+          correctAnswer: "a",
+        },
+        {
+          question: "Who painted the Mona Lisa?",
+          a: "Vincent van Gogh",
+          b: "Leonardo da Vinci",
+          c: "Pablo Picasso",
+          d: "Claude Monet",
+          correctAnswer: "b",
+        },
+        {
+          question: "What is the largest ocean on Earth?",
+          a: "Atlantic Ocean",
+          b: "Indian Ocean",
+          c: "Southern Ocean",
+          d: "Pacific Ocean",
+          correctAnswer: "d",
+        },
+        {
+          question: "Which planet is known as the 'Red Planet'?",
+          a: "Mars",
+          b: "Jupiter",
+          c: "Venus",
+          d: "Saturn",
+          correctAnswer: "a",
+        },
+        {
+          question: "Who wrote 'To Kill a Mockingbird'?",
+          a: "Harper Lee",
+          b: "J.K. Rowling",
+          c: "George Orwell",
+          d: "Mark Twain",
+          correctAnswer: "a",
+        },
+        {
+          question: "What is the capital of Brazil?",
+          a: "Buenos Aires",
+          b: "Lima",
+          c: "Brasília",
+          d: "Rio de Janeiro",
+          correctAnswer: "c",
+        },
+        {
+          question:
+            "Which scientist developed the theory of general relativity?",
+          a: "Isaac Newton",
+          b: "Galileo Galilei",
+          c: "Albert Einstein",
+          d: "Stephen Hawking",
+          correctAnswer: "c",
+        },
+        {
+          question: "What is the largest mammal on land?",
+          a: "Elephant",
+          b: "Giraffe",
+          c: "Hippopotamus",
+          d: "Rhinoceros",
+          correctAnswer: "a",
+        },
+        {
+          question:
+            "In which year did the United States declare its independence?",
+          a: "1776",
+          b: "1789",
+          c: "1801",
+          d: "1812",
+          correctAnswer: "a",
+        },
+      ];
+
+      const quiz = document.getElementById("quiz");
+      const answers = document.querySelectorAll(".answer");
+      const questionElement = document.getElementById("question");
+      const a_text = document.getElementById("a_text");
+      const b_text = document.getElementById("b_text");
+      const c_text = document.getElementById("c_text");
+      const d_text = document.getElementById("d_text");
+      const prevButton = document.querySelector(
+        "#quiz button[data-action='prev']"
+      );
+      const nextButton = document.querySelector(
+        "#quiz button[data-action='next']"
+      );
+      const skipButton = document.querySelector(
+        "#quiz button[data-action='skip']"
+      );
+      const explicitSubmitButton = document.getElementById("explicitSubmitBtn");
+      const scoreContainer = document.getElementById("scoreContainer");
+      const scoreDisplay = document.getElementById("score");
+      let currentQuestion = 0;
+      let score = 0;
+
+      function loadQuestion() {
+        const current = questions[currentQuestion];
+        questionElement.textContent = current.question;
+        a_text.textContent = current.a;
+        b_text.textContent = current.b;
+        c_text.textContent = current.c;
+        d_text.textContent = current.d;
+
+        const nameSuffix = `_${currentQuestion}`;
+        answers.forEach((answer) => {
+          answer.name = "answer" + nameSuffix;
+        });
+      }
+
+      function checkAnswer() {
+        let userAnswer = null;
+        answers.forEach((answer) => {
+          if (answer.checked) {
+            userAnswer = answer.id;
+          }
+        });
+
+        if (userAnswer === questions[currentQuestion].correctAnswer) {
+          score++;
+          console.log("Correct!");
+        } else {
+          console.log("Incorrect. Try again!");
+        }
+      }
+
+      function submitQuiz(event) {
+        event.preventDefault();
+
+        // Display the score
+        scoreDisplay.textContent = score;
+        scoreContainer.style.display = "block";
+
+        // Optionally, you can reset the quiz state here
+        // currentQuestion = 0;
+        // score = 0;
+        // loadQuestion();
+      }
+
+      nextButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        let anyOptionSelected = false;
+        answers.forEach((answer) => {
+          if (answer.checked) {
+            anyOptionSelected = true;
+          }
+        });
+
+        if (anyOptionSelected) {
+          checkAnswer();
+          currentQuestion++;
+
+          if (currentQuestion < questions.length) {
+            loadQuestion();
+          }
+        }
+      });
+
+      prevButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          loadQuestion();
+        } else {
+          nextButton.textContent = "Next";
+          nextButton.removeEventListener("click", submitQuiz);
+        }
+      });
+
+      skipButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // Always move to the next question when the skip button is clicked
+        currentQuestion++;
+
+        // If there are more questions, load the next question
+        if (currentQuestion < questions.length) {
+          loadQuestion();
+        }
+      });
+
+      quiz.addEventListener("submit", submitQuiz);
+
+      loadQuestion();
+    </script>
+  </body>
+</html>

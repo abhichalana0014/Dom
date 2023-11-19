@@ -131,7 +131,7 @@
       element.getElementsByClassName("formErrors")[0].innerHTML = error;
     };
     const validateForm = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       let returnVal = true;
 
       // name Validation
@@ -139,7 +139,7 @@
       if (name.length === 0) {
         setErrors("name", "*Enter your Name");
         returnVal = false;
-      } else if (name.length < 4) {
+      } else if (name.length < 3) {
         setErrors("name", "*Length of name is too short");
         returnVal = false;
       } else {
@@ -218,6 +218,8 @@
         if (!document.querySelector('input[name = "fage"]:checked')) {
           setErrors("age", "Select an option");
           returnVal = false;
+        }else{
+          setErrors("age", "");
         }
       });
 
