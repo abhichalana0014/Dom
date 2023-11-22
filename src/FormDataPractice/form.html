@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="../../dist/output.css" />
+    </head>
+    <body class="bg-gray-100 h-screen">
+        <div class="max-w-3xl mx-auto bg-white rounded px-6 py-3 mt-2">
+            <h2 class="text-2xl font-semibold">User Information</h2>
+
+            <form
+                id="userForm"
+                class="grid grid-cols-2"
+                name="userForm"
+                novalidate
+            >
+                <!-- First Name -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="firstName"
+                        class="block text-sm font-medium text-gray-600"
+                        >First Name</label
+                    >
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-firstName"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="lastName"
+                        class="block text-sm font-medium text-gray-600"
+                        >Last Name</label
+                    >
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-lastName"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Age -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="age"
+                        class="block text-sm font-medium text-gray-600"
+                        >Age</label
+                    >
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div id="error-age" class="text-red-500 text-xs mt-1"></div>
+                </div>
+
+                <!-- Gender -->
+                <fieldset class="px-2 mt-2">
+                    <legend class="block text-sm font-medium text-gray-600">
+                        Gender
+                    </legend>
+                    <div class="mt-2 ml-1">
+                        <label class="inline-flex items-center">
+                            <input
+                                type="radio"
+                                class="form-radio"
+                                name="gender"
+                                value="male"
+                            />
+                            <span class="ml-2">Male</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input
+                                type="radio"
+                                class="form-radio"
+                                name="gender"
+                                value="female"
+                            />
+                            <span class="ml-2">Female</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input
+                                type="radio"
+                                class="form-radio"
+                                name="gender"
+                                value="other"
+                            />
+                            <span class="ml-2">Other</span>
+                        </label>
+                    </div>
+                    <div
+                        id="error-gender"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </fieldset>
+
+                <!-- Email -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="email"
+                        class="block text-sm font-medium text-gray-600"
+                        >Email</label
+                    >
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-email"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="dob"
+                        class="block text-sm font-medium text-gray-600"
+                        >Date of Birth</label
+                    >
+                    <input
+                        type="date"
+                        id="dob"
+                        name="dob"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div id="error-dob" class="text-red-500 text-xs mt-1"></div>
+                </div>
+
+                <!-- Blood Group -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="bloodGroup"
+                        class="block text-sm font-medium text-gray-600"
+                        >Blood Group</label
+                    >
+                    <input
+                        type="text"
+                        id="bloodGroup"
+                        name="bloodGroup"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-bloodGroup"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Image -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="image"
+                        class="block text-sm font-medium text-gray-600"
+                        >Image URL</label
+                    >
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-image"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="phoneNumber"
+                        class="block text-sm font-medium text-gray-600"
+                        >Phone Number</label
+                    >
+                    <input
+                        type="tel"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    />
+                    <div
+                        id="error-phoneNumber"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Roles Dropdown -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="roles"
+                        class="block text-sm font-medium text-gray-600"
+                        >Roles</label
+                    >
+                    <select
+                        id="roles"
+                        name="roles"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    >
+                        <option value="admin">Admin</option>
+                        <option value="employee">Employee</option>
+                        <option value="hr">HR</option>
+                    </select>
+                    <div
+                        id="error-roles"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Current Address -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="currentAddress"
+                        class="block text-sm font-medium text-gray-600"
+                        >Current Address</label
+                    >
+                    <textarea
+                        id="currentAddress"
+                        name="currentAddress"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    ></textarea>
+                    <div
+                        id="error-currentAddress"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Permanent Address -->
+                <div class="px-2 mt-2">
+                    <label
+                        for="permanentAddress"
+                        class="block text-sm font-medium text-gray-600"
+                        >Permanent Address</label
+                    >
+                    <textarea
+                        id="permanentAddress"
+                        name="permanentAddress"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    ></textarea>
+                    <div
+                        id="error-permanentAddress"
+                        class="text-red-500 text-xs mt-1"
+                    ></div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button
+                        id="btn"
+                        type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    >
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <script src="form.js"></script>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

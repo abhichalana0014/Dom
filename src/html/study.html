@@ -3,16 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 200px;
+            float: left;
+            margin-right: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .valid-drop-target {
+            background-color: #c8e6c9; /* Light green color for valid drop target */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tables = document.querySelectorAll('table');
+
+            tables.forEach(table => {
+                makeTableSortable(table);
+            });
+
+            function makeTableSortable(table) {
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    row.draggable = true;
+                    row.addEventListener('dragstart', dragStart);
+                    row.addEventListener('dragover', dragOver);
+                    row.addEventListener('dragenter', dragEnter);
+                    row.addEventListener('dragleave', dragLeave);
+                    row.addEventListener('drop', drop);
+                });
+            }
+
+            function dragStart(e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+            }
+
+            function dragOver(e) {
+                e.preventDefault();
+            }
+
+            function dragEnter(e) {
+                e.preventDefault();
+                this.classList.add('valid-drop-target');
+            }
+
+            function dragLeave() {
+                this.classList.remove('valid-drop-target');
+            }
+
+            function drop(e) {
+                e.preventDefault();
+                this.classList.remove('valid-drop-target');
+
+                const data = e.dataTransfer.getData('text/plain');
+                const sourceRow = document.getElementById(data);
+                const destinationTable = this.closest('table');
+
+                if (destinationTable.contains(sourceRow)) {
+                    return;
+                }
+
+                this.parentElement.insertBefore(sourceRow, this);
+                saveTableState();
+            }
+
+            function saveTableState() {
+                const tableStates = [];
+
+                tables.forEach(table => {
+                    const rows = Array.from(table.querySelectorAll('tbody tr'));
+                    const rowIds = rows.map(row => row.id);
+                    tableStates.push({ tableId: table.id, rowIds });
+                });
+
+                localStorage.setItem('tableStates', JSON.stringify(tableStates));
+            }
+
+            function restoreTableState() {
+                const tableStates = JSON.parse(localStorage.getItem('tableStates'));
+
+                if (tableStates) {
+                    tableStates.forEach(tableState => {
+                        const table = document.getElementById(tableState.tableId);
+                        const tbody = table.querySelector('tbody');
+                        tableState.rowIds.forEach(rowId => {
+                            const row = document.getElementById(rowId);
+                            tbody.appendChild(row);
+                        });
+                    });
+                }
+            }
+
+            restoreTableState();
+        });
+    </script>
 </head>
 <body>
-    <script>
-        document.body.style.backgroundColor = "red"
 
+    <table id="table1">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="row1">
+                <td>Row 1</td>
+            </tr>
+            <tr id="row2">
+                <td>Row 2</td>
+            </tr>
+            <!-- Add more rows if needed -->
+        </tbody>
+    </table>
 
-        setTimeout(()=> document.body.style.background = "green", 5000)
-        setTimeout(()=> document.body.style.background = "blue", 5000)
-        
-    </script>
+    <table id="table2">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be moved here -->
+        </tbody>
+    </table>
+
+    <table id="table3">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be moved here -->
+        </tbody>
+    </table>
+
 </body>
 </html>

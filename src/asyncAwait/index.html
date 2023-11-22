@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const fetchapi = async()=>{
+    let p1 = new Promise((resolve,reject)=>{
+        return setTimeout(() => {
+            resolve("hello")
+        }, 5000);
+    })
+    
+    let p2 = new Promise((resolve,reject)=>{
+        return setTimeout(() => {
+            resolve("my name is Abhishek")
+        }, 10000);
+    })
+    
+    console.log("waiting")
+    let first = await p1
+    console.log(first)
+
+    console.log("waiting for p2...")
+    let second = await p2
+    console.log(second)
+}
+
+fetchapi()
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="../../dist/output.css" />
+    </head>
+    <body class="flex items-center justify-center mt-5">
+        <div class="container max-w-6xl mx-auto">
+            <div class="flex item-center justify-between gap-4 mt-2 px-4">
+                <label for="search_bar_js" class="hidden">searchTask</label>
+                <input
+                    type="search"
+                    id="search_bar_js"
+                    name="searchTask2"
+                    placeholder="Search Task"
+                    class="px-4 rounded-md border w-1/2 outline-none"
+                    oninput="formDataTable.debouncing()"
+                />
+            </div>
+            <div class="relative overflow-x-auto">
+                <table
+                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                    <thead
+                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    >
+                        <tr>
+                            <th scope="col" class="px-6 py-3">S NO.</th>
+                            <th scope="col" class="px-6 py-3">Profile</th>
+                            <th scope="col" class="px-6 py-3">Name</th>
+                            <th scope="col" class="px-6 py-3">Email</th>
+                            <th scope="col" class="px-6 py-3">Roles</th>
+                            <th scope="col" class="px-6 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            const formDataTable = {
+                getData: function () {
+                    return JSON.parse(localStorage.getItem("formObject")) || [];
+                },
+
+                updateData: function (data) {
+                    let storedData = this.getData();
+                    storedData.unshift(data);
+                    localStorage.setItem(
+                        "formObject",
+                        JSON.stringify(storedData)
+                    );
+                },
+
+                tabelUI: function () {
+                    let formData = this.getData();
+
+                    const tbody = document.querySelector("#tableBody");
+
+                    formData.map((item, index) => {
+                        console.log(item);
+                        let row = tbody.insertRow();
+                        cell0 = row.insertCell(0);
+                        cell0.textContent = index + 1;
+                        cell0.scope = "col";
+                        cell0.setAttribute("class", "px-6 py-3");
+
+                        cell1 = row.insertCell(1);
+                        cell1.innerHTML = item.image
+                            ? `<img src="${item.image}" alt="Profile Image" class="rounded-full w-16 h-16"/>`
+                            : `<img src="../FormDataPractice/utility/download1.png" alt="empty-image" class="w-16 h-16 rounded-full">`;
+                        cell1.scope = "col";
+                        cell2 = row.insertCell(2).innerHTML = item.firstName;
+                        cell3 = row.insertCell(3).innerHTML = item.email;
+                        cell4 = row.insertCell(4).innerHTML = item.roles;
+                        cell5 = row.insertCell(5);
+
+                        let deleteButton = document.createElement("button");
+                        deleteButton.classList.add("border", "rounded", "px-2");
+                        deleteButton.innerHTML = `<svg class="w-6 h-6 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor"><path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z"></path></svg>`;
+                        deleteButton.type = "button";
+                        deleteButton.addEventListener("click", function () {
+                            formDataTable.deleteUser(item, row);
+                        });
+
+                        cell5.appendChild(deleteButton);
+
+                        let editButton = document.createElement("a");
+                        editButton.classList.add(
+                            "text-blue-400",
+                            "rounded",
+                            "px-2",
+                            "underline",
+                            "font-medium",
+                            "cursor-pointer"
+                        );
+                        editButton.textContent = "Edit";
+                        editButton.addEventListener("click", function () {
+                            window.location.href = `form.html?edit=${item.id}`;
+                        });
+
+                        cell5.appendChild(editButton);
+                    });
+                },
+
+                deleteUser: function (item, row) {
+                    let id = item.id;
+                    let newData = formDataTable
+                        .getData()
+                        .filter((task) => task.id !== id);
+
+                    localStorage.setItem("formObject", JSON.stringify(newData));
+                    row.remove();
+                    formDataTable.updateIndices();
+                },
+
+                updateIndices: function () {
+                    const tbody = document.querySelector("#tableBody");
+                    const rows = tbody.querySelectorAll("tr");
+                    rows.forEach((row, index) => {
+                        const cell0 = row.cells[0];
+                        cell0.innerHTML = index + 1;
+                    });
+                },
+
+                // debounce: function (func, delay) {
+                //     let timeoutId;
+                //     return (...args) => {
+                //         clearTimeout(timeoutId);
+
+                //         timeoutId = setTimeout(() => {
+                //             func.apply(this, args);
+                //         }, delay);
+                //     };
+                // },
+
+                fetchData: function () {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            const data = formDataTable.getData();
+                            resolve(data);
+                        }, 500);
+                    });
+                },
+
+                handleSearch: async () => {
+                    const searchValue = document
+                        .getElementById("search_bar_js")
+                        .value.toLowerCase();
+
+                    try {
+                        const data = await this.fetchData();
+                        const filterData = data.filter((item) => {
+                            const name = item?.firstName.toLowerCase();
+                            const email = item?.email.toLowerCase();
+                            return (
+                                name.includes(searchValue) ||
+                                email.includes(searchValue)
+                            );
+                        });
+                        this.tabelUI(filterData);
+                    } catch (error) {
+                        console.error("Your Error for filter is ", error);
+                    }
+                },
+
+            };
+
+            const debounce = (func, delay)=>{
+                let timerId;
+                return function(...args){
+                    clearTimeout(timerId);
+
+                    timerId = setTimeout(() => {
+                        func.apply(this, args);
+                    }, delay);
+                }
+
+            }
+
+            const debouncing = debounce(function(){
+                formDataTable.handleSearch()
+            },1000);
+
+
+            formDataTable.debouncing = debouncing;
+
+
+            formDataTable.tabelUI();
+        </script>
+    </body>
+</html>
