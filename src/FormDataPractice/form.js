@@ -56,8 +56,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (element) {
                         switch (element.type) {
                             case "file":
+                                const imageurl = changableData[key];
+                                // console.log(imageurl)
                                 // Handle file input
-                                element.value = ""; // Clear the existing value
+                                // element.value = "";
+                                document.querySelector("[data-Image]").src =
+                                    imageurl.url
+                                        ? imageurl.url
+                                        : `
+                                ../FormDataPractice/utility/download1.png 
+                                `;
+                                document.querySelector(`input[name="${key}"][value="${imageurl}"]`) 
                                 break;
                             case "radio":
                                 // Handle radio buttons
@@ -88,14 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("btn").innerText = "Update";
-
-            // Add an event listener to update data on form submission
-            document
-                .getElementById("userForm")
-                .addEventListener("submit", async function (e) {
-                    e.preventDefault();
-                    await formSubmission.submitForm(editId);
-                });
         }
     }
 
@@ -113,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         readFile: function (file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
+                console.log(reader);
 
                 reader.onload = function () {
                     resolve(reader.result);
@@ -127,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         submitForm: async function (editId) {
-
             const error_firstName = document.getElementById("error-firstName");
             const error_lastName = document.getElementById("error-lastName");
             const error_age = document.getElementById("error-age");
@@ -194,7 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (value.size > 0) {
                             try {
                                 const result = await this.readFile(value);
-                                formObject[key] = result;
+                                const imageName = value.name;
+                                const imageData = {
+                                    url: result,
+                                    name: imageName,
+                                };
+                                formObject[key] = imageData;
                             } catch (error) {
                                 console.error("Error reading file:", error);
                             }
@@ -219,9 +225,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     localStorageHandler.updateDataById(formObject);
                 } else {
                     localStorageHandler.updateData(formObject);
+                    form.reset();
                 }
 
-                this.redirectPage();
+                // this.redirectPage();
             }
         },
 
@@ -379,13 +386,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     formSubmission.validations();
 
-    document.querySelector("#btn").addEventListener("click", function (){
-        formSubmission.submitForm(editId)
-    })
+    // document.querySelector("#btn").addEventListener("click", function (){
+    //     formSubmission.submitForm(editId)
+    // })
     document
         .querySelector("#userForm")
         .addEventListener("submit", function (e) {
             e.preventDefault();
-            // formSubmission.submitForm(editId);
+            formSubmission.submitForm(editId);
         });
 });
