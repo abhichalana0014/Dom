@@ -35,73 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     };
 
-    let urlParams = new URLSearchParams(window.location.search);
-    let editId = urlParams?.get("edit");
-
-    console.log(editId);
-    if (editId) {
-        let editedData = localStorageHandler.getData();
-        let changableData = editedData?.find(
-            (item) => item.id == editId.trim()
-        );
-        console.log("changableData", changableData);
-
-        if (changableData) {
-            // Populate form fields dynamically
-            const form = document.getElementById("userForm");
-
-            for (const key in changableData) {
-                if (changableData.hasOwnProperty(key)) {
-                    const element = form.elements[key];
-                    if (element) {
-                        switch (element.type) {
-                            case "file":
-                                const imageurl = changableData[key];
-                                // console.log(imageurl)
-                                // Handle file input
-                                // element.value = "";
-                                document.querySelector("[data-Image]").src =
-                                    imageurl.url
-                                        ? imageurl.url
-                                        : `
-                                ../FormDataPractice/utility/download1.png 
-                                `;
-                                document.querySelector(`input[name="${key}"][value="${imageurl}"]`) 
-                                break;
-                            case "radio":
-                                // Handle radio buttons
-                                const radioValue = changableData[key];
-                                const radio = form.querySelector(
-                                    `input[name="${key}"][value="${radioValue}"]`
-                                );
-                                if (radio) {
-                                    radio.checked = true;
-                                }
-                                break;
-                            case "checkbox":
-                                // Handle checkboxes
-                                const checkboxValue = changableData[key];
-                                element.checked = checkboxValue;
-                                break;
-                            case "textarea":
-                                // Handle text areas
-                                element.value = changableData[key];
-                                break;
-                            default:
-                                // Default for text inputs, selects, etc.
-                                element.value = changableData[key];
-                                break;
-                        }
-                    }
-                }
-            }
-
-            document.getElementById("btn").innerText = "Update";
-        }
-    }
-
-    let formSubmission = {
-        name: document.querySelector("#firstName"),
+    const formElements = {
+        firstName: document.querySelector("#firstName"),
         lastName: document.querySelector("#lastName"),
         age: document.querySelector("#age"),
         email: document.querySelector("#email"),
@@ -110,7 +45,183 @@ document.addEventListener("DOMContentLoaded", function () {
         phoneNumber: document.querySelector("#phoneNumber"),
         permanentAddress: document.querySelector("#permanentAddress"),
         currentAddress: document.querySelector("#currentAddress"),
+        image: document.querySelector("#image"),
+        roles: document.querySelector("#roles"),
+        gender: document.querySelector("#gender"),
+    };
 
+    // when in put is empty
+    const validateNotEmpty = (value, message) =>
+        value.trim() === "" ? message : "";
+    
+    // for age validation
+    const validateAge = (value) => {
+        if (value.trim() === "") {
+            return "Please enter your age.";
+        }
+
+        const age = parseInt(value);
+
+        if (isNaN(age) || age <= 18) {
+            return "Age must be a number greater than 18.";
+        }
+
+        return "";
+    };
+
+    // email validation
+    const validateEmail = (value) => {
+        if (value.trim() === "") {
+            return "Please enter your email.";
+        } else {
+            return !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
+                value
+            )
+                ? "Please enter a valid email address."
+                : "";
+        }
+    };
+
+
+    const validateBloodGroup = (value) => {
+        if (value.trim() === "") {
+            return "This field is required.";
+        } else {
+            return !["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(
+                value.toUpperCase()
+            )
+                ? "Please enter a valid blood group (e.g., A+, B-, O-)."
+                : "";
+        }
+    };
+
+    const validatePhoneNumber = (value) => {
+        return !/^[6-9]\d{9}$/.test(value)
+            ? "Please enter a valid Indian phone number."
+            : "";
+    };
+
+    const validateImage = (value) => {
+        const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+
+        if (value === "") {
+            return "Please select an image";
+        }
+
+        const extension = value.split(".").pop().toLowerCase();
+        if (!allowedExtensions.includes(extension)) {
+            return "Please select a valid image file (jpg, jpeg, png, gif).";
+        }
+
+        return "";
+    };
+    const validateDOB = (value) => {
+        if (value.trim() === "") {
+            return "Please enter your date of birth.";
+        }
+
+        const dob = new Date(value);
+        const currentDate = new Date();
+        const age = currentDate.getFullYear() - dob.getFullYear();
+
+        if (isNaN(age) || age < 18) {
+            return "Age must be 18 years or older.";
+        }
+
+        return "";
+    };
+
+    const validationRules = {
+        firstname: {
+            rule: validateNotEmpty,
+            message: "Please enter a first name.",
+        },
+        lastname: {
+            rule: validateNotEmpty,
+            message: "Please enter a last name.",
+        },
+        age: { rule: validateAge, message: "Plese enter your age" },
+        email: {
+            rule: validateEmail,
+            message: "Please enter a valid email address.",
+        },
+        dob: { rule: validateDOB, message: "Please enter a date of birth." },
+        bloodgroup: {
+            rule: validateBloodGroup,
+            message: "Please enter a valid blood group.",
+        },
+        phonenumber: {
+            rule: validatePhoneNumber,
+            message: "Please enter a valid phone number.",
+        },
+        currentaddress: {
+            rule: validateNotEmpty,
+            message: "Please enter a current address.",
+        },
+        permanentaddress: {
+            rule: validateNotEmpty,
+            message: "Please enter a permanent address.",
+        },
+        image: {
+            rule: validateImage,
+            message: "Please select a valid image (jpg, jpeg, png, gif).",
+        },
+        roles: {
+            rule: validateNotEmpty,
+            message: "Please select a role.",
+        },
+        gender: {
+            rule: validateNotEmpty,
+            message: "Please select a gender.",
+        },
+    };
+
+    function validateForm() {
+        let isValid = true;
+
+        for (const key in formElements) {
+            if (formElements.hasOwnProperty(key)) {
+                console.log(formElements[key]);
+                const element = formElements[key];
+
+                console.log(key);
+                const validationError =
+                    key === "image" && editId
+                        ? ""
+                        : validateField(key, element.value);
+
+                console.log(validationError);
+
+                if (validationError !== "") {
+                    displayError(element, validationError);
+                    isValid = false;
+                }
+            }
+        }
+
+        return isValid;
+    }
+
+    function validateField(key, value) {
+        const { rule, message } = validationRules[key.toLowerCase()] || {};
+        return rule ? rule(value, message) : "";
+    }
+
+    function displayError(element, errorMessage) {
+        const errorElement = document.getElementById(`error-${element.id}`);
+        if (errorElement) {
+            errorElement.innerHTML = errorMessage;
+        }
+    }
+
+    const clearError = (element) => {
+        const errorElement = document.getElementById(`error-${element.id}`);
+        if (errorElement) {
+            errorElement.innerHTML = "";
+        }
+    };
+
+    const formSubmission = {
         readFile: function (file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -129,61 +240,14 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         submitForm: async function (editId) {
-            const error_firstName = document.getElementById("error-firstName");
-            const error_lastName = document.getElementById("error-lastName");
-            const error_age = document.getElementById("error-age");
-            const error_email = document.getElementById("error-email");
-            const error_dob = document.getElementById("error-dob");
-            const error_bloodGroup =
-                document.getElementById("error-bloodGroup");
-            const error_phoneNumber =
-                document.getElementById("error-phoneNumber");
-            const error_currentAddress = document.getElementById(
-                "error-currentAddress"
-            );
-            const error_permanentAddress = document.getElementById(
-                "error-permanentAddress"
-            );
+            for (const key in formElements) {
+                if (formElements.hasOwnProperty(key)) {
+                    clearError(formElements[key]);
+                }
+            }
+            let isValid = validateForm();
 
-            if (this.name.value.trim() === "") {
-                error_firstName.innerHTML = "First Name is required";
-            }
-            if (this.lastName.value.trim() === "") {
-                error_lastName.innerHTML = "Last Name is required";
-            }
-            if (this.age.value === "") {
-                error_age.innerHTML = "Age is required";
-            }
-            if (this.email.value === "") {
-                error_email.innerHTML = "Please Enter email";
-            }
-            if (this.dob.value === "") {
-                error_dob.innerHTML = "Please select DOB";
-            }
-            if (this.bloodGroup.value === "") {
-                error_bloodGroup.innerHTML = "Please enter blood group";
-            }
-            if (this.phoneNumber.value === "") {
-                error_phoneNumber.innerHTML = "Enter Phone number";
-            }
-            if (this.permanentAddress.value === "") {
-                error_currentAddress.innerHTML = "Fill address";
-            }
-            if (this.currentAddress.value === "") {
-                error_permanentAddress.innerHTML = "Fill address";
-            }
-
-            if (
-                !error_firstName.innerHTML &&
-                !error_lastName.innerHTML &&
-                !error_age.innerHTML &&
-                !error_email.innerHTML &&
-                !error_dob.innerHTML &&
-                !error_bloodGroup.innerHTML &&
-                !error_phoneNumber.innerHTML &&
-                !error_permanentAddress.innerHTML &&
-                !error_currentAddress.innerHTML
-            ) {
+            if (isValid) {
                 console.log("editId in submitForm:", editId);
                 let userForm = document.querySelector("#userForm");
                 let formData = new FormData(userForm);
@@ -204,8 +268,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             } catch (error) {
                                 console.error("Error reading file:", error);
                             }
-                        } else {
-                            formObject[key] = null;
+                        } else if (editId) {
+                            const existingData = localStorageHandler.getData();
+                            const existingImage = existingData?.find(
+                                (item) => item.id == editId.trim()
+                            )?.[key];
+
+                            formObject[key] = existingImage || null;
                         }
                     } else {
                         formObject[key] = value;
@@ -225,166 +294,70 @@ document.addEventListener("DOMContentLoaded", function () {
                     localStorageHandler.updateDataById(formObject);
                 } else {
                     localStorageHandler.updateData(formObject);
-                    form.reset();
+                    userForm.reset();
                 }
 
-                // this.redirectPage();
+                this.redirectPage();
             }
-        },
-
-        validations: function () {
-            const error_firstName = document.getElementById("error-firstName");
-            const error_lastName = document.getElementById("error-lastName");
-            const error_age = document.getElementById("error-age");
-            const error_email = document.getElementById("error-email");
-            const error_dob = document.getElementById("error-dob");
-            const error_bloodGroup =
-                document.getElementById("error-bloodGroup");
-            const error_phoneNumber =
-                document.getElementById("error-phoneNumber");
-            const error_currentAddress = document.getElementById(
-                "error-currentAddress"
-            );
-            const error_permanentAddress = document.getElementById(
-                "error-permanentAddress"
-            );
-
-            this.name.addEventListener("input", () => {
-                if (!/^[a-zA-Z]+$/.test(this.name.value)) {
-                    error_firstName.innerHTML =
-                        "First Name should contain only alphabets.";
-                }
-                if (
-                    this.name.value === "" ||
-                    /^[a-zA-Z]+$/.test(this.name.value)
-                ) {
-                    error_firstName.innerHTML = "";
-                }
-            });
-
-            this.lastName.addEventListener("input", () => {
-                if (!/^[a-zA-Z]+$/.test(this.lastName.value)) {
-                    error_lastName.innerHTML =
-                        "Last Name should contain only alphabets.";
-                }
-
-                if (
-                    this.lastName.value === "" ||
-                    /^[a-zA-Z]+$/.test(this.lastName.value)
-                ) {
-                    error_lastName.innerHTML = "";
-                }
-            });
-
-            this.age.addEventListener("input", () => {
-                let ageValue = this.age.value;
-
-                if (ageValue < 18) {
-                    error_age.innerHTML =
-                        "Age must be a number greater than 18.";
-                }
-                if (ageValue === "" || ageValue > 18) {
-                    error_age.innerHTML = "";
-                }
-            });
-
-            this.email.addEventListener("input", () => {
-                let emailValue = this.email.value;
-
-                const emailRegex =
-                    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-                if (!emailRegex.test(emailValue)) {
-                    error_email.innerHTML =
-                        "Please enter a valid email address.";
-                }
-                if (emailValue === "" || emailRegex.test(emailValue)) {
-                    error_email.innerHTML = "";
-                }
-            });
-
-            this.dob.addEventListener("input", () => {
-                if (this.dob.value !== "") {
-                    error_dob.innerHTML = "";
-                }
-            });
-
-            // this.role.addEventListener("input", () => {
-            //     if (this.role.value !== "") {
-            //         roleError.innerHTML = "";
-            //     }
-            // });
-
-            this.bloodGroup.addEventListener("input", () => {
-                let bloodGroupValue = this.bloodGroup.value;
-
-                const validBloodGroups = [
-                    "A+",
-                    "A-",
-                    "B+",
-                    "B-",
-                    "AB+",
-                    "AB-",
-                    "O+",
-                    "O-",
-                ];
-
-                if (!validBloodGroups.includes(bloodGroupValue.toUpperCase())) {
-                    error_bloodGroup.innerHTML =
-                        "Please enter a valid blood group (e.g., A+, B-, O-).";
-                }
-                if (
-                    bloodGroupValue === "" ||
-                    validBloodGroups.includes(bloodGroupValue.toUpperCase())
-                ) {
-                    error_bloodGroup.innerHTML = "";
-                }
-            });
-
-            // this.image.addEventListener("change", (e) => {
-            //     let imageFile = this.image.files;
-
-            //     if (imageFile) {
-            //         imageError.innerHTML = "";
-            //     }
-            // });
-
-            this.phoneNumber.addEventListener("input", () => {
-                let phoneNumberValue = this.phoneNumber.value;
-
-                // Regular expression for a valid Indian phone number
-                const phoneRegex = /^[6-9]\d{9}$/;
-
-                if (!phoneRegex.test(phoneNumberValue)) {
-                    error_phoneNumber.innerHTML =
-                        "Please enter a valid Indian phone number.";
-                }
-                if (
-                    phoneNumberValue === "" ||
-                    phoneRegex.test(phoneNumberValue)
-                ) {
-                    error_phoneNumber.innerHTML = "";
-                }
-            });
-
-            this.currentAddress.addEventListener("input", () => {
-                if (currentAddress.value !== "") {
-                    error_currentAddress.innerHTML = "";
-                }
-            });
-
-            this.permanentAddress.addEventListener("input", () => {
-                if (permanentAddress.value !== "") {
-                    error_permanentAddress.innerHTML = "";
-                }
-            });
         },
 
         redirectPage: function () {
             window.location.href = "table.html";
         },
     };
-    formSubmission.validations();
+    // formSubmission.validations();
+
+    const populateFormFields = (editId) => {
+        if (editId) {
+            const editedData = localStorageHandler.getData();
+            const changableData = editedData?.find(
+                (item) => item.id == editId.trim()
+            );
+
+            if (changableData) {
+                const form = document.getElementById("userForm");
+
+                for (const key in changableData) {
+                    if (changableData.hasOwnProperty(key)) {
+                        const element = formElements[key];
+                        if (element) {
+                            switch (element.type) {
+                                case "file":
+                                    const imageurl = changableData[key];
+                                    document.querySelector("[data-Image]").src =
+                                        imageurl
+                                            ? imageurl.url
+                                            : "../FormDataPractice/utility/download1.png";
+                                    // document.querySelector(
+                                    //     `input[name="${key}"][value="${imageurl}"]`
+                                    // );
+                                    break;
+
+                                case "checkbox":
+                                    const checkboxValue = changableData[key];
+                                    element.checked = checkboxValue;
+                                    break;
+
+                                case "textarea":
+                                    element.value = changableData[key];
+                                    break;
+
+                                default:
+                                    element.value = changableData[key];
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                document.getElementById("btn").innerText = "Update";
+            }
+        }
+    };
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let editId = urlParams?.get("edit");
+    populateFormFields(editId);
 
     // document.querySelector("#btn").addEventListener("click", function (){
     //     formSubmission.submitForm(editId)

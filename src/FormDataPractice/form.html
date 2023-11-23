@@ -8,15 +8,19 @@
     </head>
     <body class="bg-gray-100 h-screen">
         <div class="max-w-3xl mx-auto bg-white rounded px-6 py-3 mt-2">
-            <div class="flex ">
-                <div class="flex w-2/5  items-center"><h2 class=" text-2xl font-semibold">User Information</h2></div>
-                <div class="px-5 shrink-0">
-                    <img
-                        data-Image
-                        src="utility/download1.png"
-                        alt="empty-image"
-                        class="w-16 h-16 rounded-full"
-                    />
+            <div class="relative flex w-full text-center border-b-2">
+                <div class="flex mb-2">
+                    <div class=" px-5 flex items-center justify-center">
+                        <img
+                            data-Image
+                            src="utility/download1.png"
+                            alt="empty-image"
+                            class="w-16 h-16 rounded-full"
+                        />
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-2xl font-semibold">User Information</h2>
+                    </div>
                 </div>
             </div>
 
@@ -81,44 +85,27 @@
                 </div>
 
                 <!-- Gender -->
-                <fieldset class="px-2 mt-2">
-                    <legend class="block text-sm font-medium text-gray-600">
-                        Gender
-                    </legend>
-                    <div class="mt-2 ml-1">
-                        <label class="inline-flex items-center">
-                            <input
-                                type="radio"
-                                class="form-radio"
-                                name="gender"
-                                value="male"
-                            />
-                            <span class="ml-2">Male</span>
-                        </label>
-                        <label class="inline-flex items-center ml-6">
-                            <input
-                                type="radio"
-                                class="form-radio"
-                                name="gender"
-                                value="female"
-                            />
-                            <span class="ml-2">Female</span>
-                        </label>
-                        <label class="inline-flex items-center ml-6">
-                            <input
-                                type="radio"
-                                class="form-radio"
-                                name="gender"
-                                value="other"
-                            />
-                            <span class="ml-2">Other</span>
-                        </label>
-                    </div>
+                <div class="px-2 mt-2">
+                    <label
+                        for="gender"
+                        class="block text-sm font-medium text-gray-600"
+                        >Gender</label
+                    >
+                    <select
+                        id="gender"
+                        name="gender"
+                        class="mt-1 p-1 w-full border rounded-md"
+                    >
+                        <option value="">Select your Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Transgender">Transgender</option>
+                    </select>
                     <div
                         id="error-gender"
                         class="text-red-500 text-xs mt-1"
                     ></div>
-                </fieldset>
+                </div>
 
                 <!-- Email -->
                 <div class="px-2 mt-2">
@@ -175,7 +162,7 @@
                 </div>
 
                 <!-- Image -->
-                
+
                 <div class="px-2 mt-2">
                     <label
                         for="image"
@@ -225,6 +212,7 @@
                         name="roles"
                         class="mt-1 p-1 w-full border rounded-md"
                     >
+                        <option value="">Select a Role</option>
                         <option value="admin">Admin</option>
                         <option value="employee">Employee</option>
                         <option value="hr">HR</option>
@@ -245,7 +233,7 @@
                     <textarea
                         id="currentAddress"
                         name="currentAddress"
-                        class="mt-1 p-1 w-full border rounded-md"
+                        class="mt-1 px-2 w-full border rounded-md"
                     ></textarea>
                     <div
                         id="error-currentAddress"
@@ -263,7 +251,7 @@
                     <textarea
                         id="permanentAddress"
                         name="permanentAddress"
-                        class="mt-1 p-1 w-full border rounded-md"
+                        class="mt-1 px-2 w-full border rounded-md"
                     ></textarea>
                     <div
                         id="error-permanentAddress"
@@ -283,6 +271,11 @@
                 </div>
             </form>
         </div>
+
+        <div
+            id="toastBox"
+            class=" fixed top-0 right-5 flex items-end flex-col overflow-hidden p-3"
+        ></div>
 
         <script src="form.js"></script>
     </body>
