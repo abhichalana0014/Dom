@@ -68,8 +68,8 @@
                                             item.firstName.toLowerCase();
                                         const email = item.email.toLowerCase();
                                         return (
-                                            name.includes(res) ||
-                                            email.includes(res)
+                                            name.includes(res.toLowerCase()) ||
+                                            email.includes(res.toLowerCase())
                                         );
                                     }
                                 );

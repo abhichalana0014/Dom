@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fetchApi</title>
+        <link rel="stylesheet" href="../../dist/output.css" />
+    </head>
+    <body>
+        <div class="p-10 space-y-4 min-h-screen">
+            <h1 class="text-2xl font-semibold">Products</h1>
+            <ul
+                id="product-card"
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+            ></ul>
+        </div>
+
+        <script>
+            "use strict";
+
+            (async () => {
+                const getData = (url) => {
+                    return new Promise(async (resolve, reject) => {
+                        try {
+                            let response = await fetch(url);
+                            let data = await response.json();
+                            resolve(data);
+                        } catch (error) {
+                            console.error("error is", error);
+                            reject(error);
+                        }
+                    });
+                };
+                const postData = (url, item) => {
+                    return new Promise(async (res, rej) => {
+                        try {
+                            let response = await fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json;charset=utf-8",
+                                },
+                                body: JSON.stringify(item),
+                            });
+                            let data = await response.json();
+                            console.log(data);
+                            res(data);
+                        } catch (error) {
+                            console.error("error is", error);
+                            rej(error);
+                        }
+                    });
+                };
+                const url = "https://fakestoreapi.com/products";
+                const newData = {
+                    title: " ksdfklah",
+                    price: "300",
+                };
+
+                getData(url)
+                    .then((existingProduct) => {
+                        existingProduct.push(newData);
+                        console.log(existingProduct);
+
+                        localStorage.setItem(
+                            "products",
+                            JSON.stringify(existingProduct)
+                        );
+
+                        return postData(url, existingProduct);
+                    })
+                    .catch((error) => {
+                        console.error("error is ", error);
+                    });
+
+                const storedData =
+                    JSON.parse(localStorage.getItem("products")) || [];
+
+                console.log("storedData", storedData);
+
+                let card = document.getElementById("product-card");
+                storedData.map((item, index) => {
+                    console.log(item);
+                    card.innerHTML += `
+                    <li class="w-full max-w-sm border flex gap-4 p-2 rounded shadow" >
+                        <div class="shrink-0">
+                            <img src="${item.image}" alt="" class="w-24 h-24 object-cover">
+                        </div>
+                        <div>
+                            <h2 class="text-md font-medium">${item.title}</h2>
+                            <p>Price : ${item.price}</p>
+                            <p>category : ${item.category}</p>
+                        </div>
+                    </li>`;
+                });
+            })();
+        </script>
+    </body>
+</html>

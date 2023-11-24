@@ -35,6 +35,59 @@ document.addEventListener("DOMContentLoaded", function () {
         },
     };
 
+    let toastBox = document.getElementById("toastBox");
+
+      let successMsg = `<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8               text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/       2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+            </svg>
+            <span class="sr-only">Check icon</span>
+        </div>      
+        <div class="ml-3 text-sm font-normal"> success</div>
+        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg  p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        </button>`;
+
+      let errorMsg = "please check the error code";
+      let invalidMsg = "Invalid code";
+
+      const showToast = (msg) => {
+        let toast = document.createElement("div");
+        toast.setAttribute(
+          "class",
+          "w-72 h-12 bg-white font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-green-400 after:animate-bottomslider"
+        );
+        toast.innerHTML = msg;
+
+        if (msg.includes("success")) {
+          toast.setAttribute(
+            "class",
+            "w-72 h-12 bg-green-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-green-400 after:animate-bottomslider"
+          );
+        }
+        if (msg.includes("error")) {
+          toast.setAttribute(
+            "class",
+            "w-72 h-12 bg-red-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-red-400 after:animate-bottomslider"
+          );
+        }
+        if (msg.includes("Invalid")) {
+          toast.setAttribute(
+            "class",
+            "w-72 h-12 bg-orange-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-orange-400 after:animate-bottomslider"
+          );
+        }
+
+        toastBox.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 6000);
+      };
+
     const formElements = {
         firstName: document.querySelector("#firstName"),
         lastName: document.querySelector("#lastName"),
@@ -124,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const currentDate = new Date();
         const age = currentDate.getFullYear() - dob.getFullYear();
 
-        if (isNaN(age) || age < 18) {
-            return "Age must be 18 years or older.";
+        if (isNaN(age) || age <= 18) {
+            return "please match your age";
         }
 
         return "";
@@ -240,6 +293,13 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         submitForm: async function (editId) {
+            // const formData = new FormData()
+            // let user  = Object.fromEntries(formData)
+            // if(editId) {
+            //     user = editUser   
+            //     user
+            // }
+
             for (const key in formElements) {
                 if (formElements.hasOwnProperty(key)) {
                     clearError(formElements[key]);
@@ -291,13 +351,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
                 console.log("Data to be updated:", formObject);
                 if (editId) {
+                    showToast(success)
                     localStorageHandler.updateDataById(formObject);
                 } else {
+                    showToast(successMsg)
                     localStorageHandler.updateData(formObject);
                     userForm.reset();
                 }
 
-                this.redirectPage();
+                window.setTimeout(()=>{
+                    this.redirectPage();
+                },3000)
             }
         },
 
@@ -355,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    let urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     let editId = urlParams?.get("edit");
     populateFormFields(editId);
 
