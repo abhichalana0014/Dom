@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="relative min-h-screen w-full bg-blue-500 flex items-center justify-center p-10" data-NewUserForm>
+        <div class="w-full max-w-3xl bg-white p-10 rounded-md shadow">
+            <a href="/src/20NovDom/AdminPanel.html" class="text-sm font-semibold flex items-center gap-2">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <polygon
+                        points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9">
+                    </polygon>
+                </svg>
+                <span>Go Back To Admin Panel</span>
+            </a>
+            <form id="addUserForm" method="post" action="" class="space-y-4">
+                <h1 class="font-semibold text-3xl text-center" data-formHeading>Register New User</h1>
+                <div class="grid grid-cols-2 gap-8 items-center">
+                    <div>
+                        <label for="firstName" class="block">First Name</label>
+                        <input type="text" name="firstName" id="firstName" class="border p-2 rounded-md w-full">
+                        <p data-firstNameError class="text-red-600"></p>
+                    </div>
+
+                    <div>
+                        <label for="lastName" class="block">Last Name</label>
+                        <input type="text" name="lastName" id="LastName" class="border p-2 rounded-md w-full">
+                        <p data-lastNameError class="text-red-600 "></p>
+                    </div>
+
+                    <fieldset class="">
+                        <legend class="">Gender</legend>
+                        <div class="space-x-2 flex">
+                            <input type="radio" name="gender" id="male" value="male"><label for="male">Male</label>
+                            <input type="radio" name="gender" id="female" value="female"><label
+                                for="female">Female</label>
+                            <input type="radio" name="gender" value="transgender" id="transgender"><label
+                                for="transgender">Transgender</label>
+                            <input type="radio" name="gender" value="others" id="others"><label
+                                for="others">Others</label>
+                        </div>
+                        <p data-genderError class="text-red-600"></p>
+                    </fieldset>
+
+                    <div>
+                        <label for="DOB">Date Of Birth</label>
+                        <input type="date" name="dob" id="DOB" class="border p-2 rounded-md w-full">
+                        <p data-dobError class="text-red-600"></p>
+                    </div>
+
+                    <div>
+                        <label for="age" class="block">Age</label>
+                        <input type="number" name="age" id="age" class="border p-2 rounded-md w-full hidden-spinner">
+                        <p data-ageError class="text-red-600 "></p>
+                    </div>
+
+
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="border p-2 rounded-md w-full">
+                        <p data-emailError class="text-red-600"></p>
+                    </div>
+
+                    <div>
+                        <label for="BloodGroup">Blood Group</label>
+                        <input type="text" name="bloodGroup" id="BloodGroup" class="border p-2 rounded-md w-full"
+                            placeholder="example(A+)">
+                        <p data-bloodGroupError class="text-red-600"></p>
+                    </div>
+
+                    <div>
+                        <label for="jobRole">Role</label>
+                        <select name="jobRole" id="jobRole" class="border p-2 rounded-md w-full">
+                            <option value="">Select Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="employee">Employee</option>
+                            <option value="hr">HR</option>
+                        </select>
+                        <p data-jobRoleError class="text-red-600"></p>
+                    </div>
+
+                    <div class="flex gap-2 items-center col-span-2">
+                        <div class="h-14 aspect-square border shrink-0 rounded-full overflow-hidden">
+                            <img src="https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+                                alt="user" class="w-full h-full object-cover" data-imageBox>
+                        </div>
+                        <label for="image">Photograph</label>
+                        <input type="file" name="image" accept="image/png, image/jpeg, image/jpg"
+                            class="border p-2 rounded-md w-full">
+                        <p data-imageError class="text-red-600"> </p>
+                    </div>
+
+                    <fieldset class="col-span-2 space-y-2">
+                        <legend class="text-lg font-medium">Current Address</legend>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label for="currentCity" class="block">City</label>
+                                <input type="text" name="currentCity" id="currentCity" placeholder="enter city"
+                                    class="border p-2 rounded-md w-full">
+                                <p data-currentCityError class="text-red-600 "> </p>
+                            </div>
+                            <div>
+                                <label for="currentState" class="block">State</label>
+                                <input type="text" name="currentState" id="currentState" placeholder="enter state"
+                                    class="border p-2 rounded-md w-full">
+                                <p data-currentStateError class="text-red-600 "> </p>
+                            </div>
+                            <div>
+                                <label for="currentZipCode" class="block">Zip Code</label>
+                                <input type="number" minlength="5" maxlength="10" name="currentZipCode"
+                                    id="currentZipCode" placeholder="enter ZipCode"
+                                    class="border p-2 rounded-md w-full hidden-spinner">
+                                <p data-currentZipCodeError class="text-red-600 "> </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="sameAddress"><label for="sameAddress">same address as
+                                current</label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="col-span-2">
+                        <legend class="text-lg font-medium">Permanent Address</legend>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label for="permanentCity" class="block">City</label>
+                                <input type="text" name="permanentCity" id="permanentCity" placeholder="enter city"
+                                    class="border p-2 rounded-md w-full">
+                                <p data-permanentCityError class="text-red-600 "> </p>
+                            </div>
+                            <div>
+                                <label for="permanentState" class="block">State</label>
+                                <input type="text" name="permanentState" id="permanentState" placeholder="enter state"
+                                    class="border p-2 rounded-md w-full">
+                                <p data-permanentStateError class="text-red-600 "> </p>
+                            </div>
+                            <div>
+                                <label for="permanentZipCode" class="block">City</label>
+                                <input type="text" name="permanentZipCode" id="permanentZipCode"
+                                    placeholder="enter Zip code" class="border p-2 rounded-md w-full">
+                                <p data-permanentZipCodeError class="text-red-600 "> </p>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <button type="submit"
+                        class="bg-blue-500 text-white font-semibold p-2 rounded-md col-span-2">Submit</button>
+                </div>
+        </div>
+        </form>
+        <div data-modal class="fixed inset-0 bg-black bg-opacity-20 hidden items-center justify-center">
+            <div class="p-10 w-full max-w-lg bg-green-600 rounded-md space-y-4">
+                <h2 class="font-bold text-2xl text-white flex items-center justify-between">
+                    <span data-successMsg>New User Added SuccessFully </span>
+                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z">
+                        </path>
+                    </svg>
+                </h2>
+
+                <a href="/src/20NovDom/AdminPanel.html"
+                    class="w-full block text-center bg-white hover:bg-opacity-90 font-semibold rounded-md px-4 py-1">Ok,
+                    Go to
+                    AdminPanel</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        (function () {
+            'use strict'
+
+            const validation = (user) => {
+                const validate = {
+                    isValid: false,
+                    errors: [],
+                }
+                if (!user instanceof Object) return;
+                if (!(/^[A-Za-z]+$/.test(user.firstName?.trim()))) {
+                    validate.errors.push({
+                        name: 'firstName',
+                        message: '*special characters not allowed'
+                    })
+                }
+                if (!(/^[A-Za-z]+$/.test(user.lastName?.trim()))) {
+                    validate.errors.push({
+                        name: 'lastName',
+                        message: '*special characters not allowed'
+                    })
+                }
+                if (!(user.age >= 18)) {
+                    validate.errors.push({
+                        name: 'age',
+                        message: '*age must be 18 above'
+                    })
+                }
+                if (!user.gender) {
+                    validate.errors.push({
+                        name: 'gender',
+                        message: '*select gender'
+                    })
+                }
+                if (!(/^(A|B|AB|O)[+-]$/.test(user.bloodGroup?.trim()))) {
+                    validate.errors.push({
+                        name: 'bloodGroup',
+                        message: '*enter blood group'
+                    })
+                }
+                if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(user.email?.trim()))) {
+                    validate.errors.push({
+                        name: 'email',
+                        message: '*enter correct email'
+                    })
+                }
+                if (new Date(user.dob) > new Date()) {
+                    validate.errors.push({
+                        name: 'dob',
+                        message: '*enter dob'
+                    })
+                }
+                if (!(user.jobRole?.trim())) {
+                    validate.errors.push({
+                        name: 'jobRole',
+                        message: '*select jobRole group'
+                    })
+                }
+                if (!user.image) {
+                    validate.errors.push({
+                        name: 'image',
+                        message: '*please select image'
+                    })
+                }
+                if (!/^[A-Za-z]+$/.test(user.currentCity?.trim())) {
+                    validate.errors.push({
+                        name: 'currentCity',
+                        message: '*enter correct city '
+                    })
+                }
+                if (!/^[A-Za-z]+$/.test(user.currentState?.trim())) {
+                    validate.errors.push({
+                        name: 'currentState',
+                        message: '*enter correct State'
+                    })
+                }
+                if (user.currentZipCode?.length < 5) {
+                    validate.errors.push({
+                        name: 'currentZipCode',
+                        message: '*enter correct zip code'
+                    })
+                }
+                if (!/^[A-Za-z]+$/.test(user.permanentCity?.trim())) {
+                    validate.errors.push({
+                        name: 'permanentCity',
+                        message: '*enter correct city '
+                    })
+                }
+                if (!/^[A-Za-z]+$/.test(user.permanentState?.trim())) {
+                    validate.errors.push({
+                        name: 'permanentState',
+                        message: '*enter correct State'
+                    })
+                }
+                if (user.permanentZipCode?.length < 5) {
+                    validate.errors.push({
+                        name: 'permanentZipCode',
+                        message: '*enter correct zip code'
+                    })
+                }
+                if (validate.errors.length === 0) {
+                    validate.isValid = true
+                }
+                return validate;
+            };
+
+            const getImagePath = (image) => {
+                return new Promise((resolve, reject) => {
+                    let selectedfile = new FileReader();
+                    selectedfile.readAsDataURL(image)
+                    selectedfile.addEventListener('load', () => {
+                        resolve(`${selectedfile.result}`)
+                    });
+                    selectedfile.addEventListener('error', () => {
+                        reject(`${selectedfile.error}`)
+                    });
+                }).then(value => value).catch(err => err)
+            }
+
+
+            const user = {
+
+                userList: localStorage.getItem('userList') ? JSON.parse(localStorage.getItem('userList')) : [],
+
+                userForm: document.querySelector('#addUserForm'),
+
+                updateLocalStorage: function () {
+                    localStorage.setItem('userList', JSON.stringify(this.userList));
+                },
+
+                addUser: async function () {
+                    let editId = new URLSearchParams(window.location.search).get('editId');
+                    let userData = this.userList.filter(item => item.id === +editId)
+
+                    let newUser = new FormData(this.userForm)
+                    let user = Object.fromEntries(newUser);
+
+                    user.image = await getImagePath(user.image)
+                    if (!editId) {
+                        if (validation(user).isValid) {
+                            user.id = Date.now()
+                            this.userList.push(user)
+                            this.updateLocalStorage()
+                            this.formfields.modal.classList.remove('hidden')
+                            this.formfields.modal.classList.add('flex')
+                            return;
+                        }
+                        let errors = validation(user).errors;
+                        this.setError(errors)
+                    }
+                },
+
+                setError: function (errors) {
+                    errors.map(error => {
+                        document.querySelector(`[data-${error.name}Error]`).innerHTML = error.message
+                    })
+                },
+
+                formfields: {
+                    firstName: document.querySelector('[name = "firstName"]'),
+                    lastName: document.querySelector('[name = "lastName"]'),
+                    age: document.querySelector('[name = "age"]'),
+                    gender: document.querySelector('[name = "gender"]'),
+                    dob: document.querySelector('[name = "dob"]'),
+                    email: document.querySelector('[name = "email"]'),
+                    bloodGroup: document.querySelector('[name = "bloodGroup"]'),
+                    jobRole: document.querySelector('[name = "jobRole"]'),
+                    image: document.querySelector('[name = "image"]'),
+                    currentCity: document.querySelector('[name = "currentCity"]'),
+                    currentState: document.querySelector('[name = "currentState"]'),
+                    currentZipCode: document.querySelector('[name = "currentZipCode"]'),
+                    permanentCity: document.querySelector('[name = "permanentCity"]'),
+                    permanentState: document.querySelector('[name = "permanentState"]'),
+                    permanentZipCode: document.querySelector('[name = "permanentZipCode"]'),
+                    sameAddress: document.querySelector('#sameAddress'),
+                    imageBox: document.querySelector('[data-imageBox]'),
+                    formHeading: document.querySelector('[data-formHeading]'),
+                    successMsg: document.querySelector('[data-successMsg]'),
+                    modal: document.querySelector('[data-modal]'),
+                },
+
+                changeUser: {},
+
+                editUser: function () {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    let editId = urlParams.get('editId');
+
+                    if (editId) {
+                        let editUserData = this.userList.filter(item => item.id === +editId)
+                        let itemIndex = this.userList.indexOf(editUserData[0])
+                        this.formfields.firstName.value = this.userList[itemIndex]?.firstName
+                        this.formfields.lastName.value = this.userList[itemIndex]?.lastName
+                        this.formfields.age.value = this.userList[itemIndex]?.age
+                        this.formfields.email.value = this.userList[itemIndex]?.email
+                        this.formfields.gender.checked = this.userList[itemIndex]?.gender
+                        this.formfields.dob.value = this.userList[itemIndex]?.dob
+                        this.formfields.bloodGroup.value = this.userList[itemIndex]?.bloodGroup
+                        this.formfields.jobRole.value = this.userList[itemIndex]?.jobRole
+                        this.formfields.currentCity.value = this.userList[itemIndex]?.currentCity
+                        this.formfields.currentState.value = this.userList[itemIndex]?.currentState
+                        this.formfields.currentZipCode.value = this.userList[itemIndex]?.currentZipCode
+                        this.formfields.permanentCity.value = this.userList[itemIndex]?.permanentCity
+                        this.formfields.permanentState.value = this.userList[itemIndex]?.permanentState
+                        this.formfields.permanentZipCode.value = this.userList[itemIndex]?.permanentZipCode
+                        this.formfields.imageBox.src = this.userList[itemIndex]?.image ? this.userList[itemIndex]?.image : `https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png`
+                    }
+                },
+
+                bind: function () {
+                    this.editUser()
+                    this.formfields.sameAddress.addEventListener('change', (e) => {
+                        this.formfields.permanentCity.value = this.formfields.currentCity.value
+                        this.formfields.permanentState.value = this.formfields.currentState.value
+                        this.formfields.permanentZipCode.value = this.formfields.currentZipCode.value
+                    })
+                    this.formfields.dob.addEventListener('blur', () => {
+                        let dob = new Date(this.formfields.dob.value)
+                        let date = new Date()
+                        this.formfields.age.value = date.getFullYear() - dob.getFullYear();
+                    })
+
+                    this.userForm.addEventListener('submit', (e) => {
+                        e.preventDefault()
+                        this.addUser()
+                    })
+                },
+                render: function () {
+                    this.bind();
+
+                }
+            }
+            user.render()
+        })()
+
+    </script>
+</body>
+
+</html>

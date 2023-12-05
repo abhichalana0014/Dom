@@ -1,9 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
+import { showToast } from "./alert.js";
+// import { showToast } from "./alert.js";
+
+(()=>{
+    "use strict"
+
     const localStorageHandler = {
         getData: function () {
             return JSON.parse(localStorage.getItem("formObject")) || [];
         },
-
+    
         updateData: function (data) {
             let storedData = this.getData();
             storedData.unshift(data);
@@ -11,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         updateDataById: function (updatedData) {
             console.log("Updating data with id:", updatedData.id);
-
+    
             let storedData = this.getData();
             let updated = false;
-
+    
             for (let i = 0; i < storedData.length; i++) {
                 if (
                     String(storedData[i].id).trim() ===
@@ -25,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     break; // Exit the loop once the update is done
                 }
             }
-
+    
             if (updated) {
                 localStorage.setItem("formObject", JSON.stringify(storedData));
                 console.log("Data updated successfully.");
@@ -34,60 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
     };
-
-    let toastBox = document.getElementById("toastBox");
-
-      let successMsg = `<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8               text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/       2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-            </svg>
-            <span class="sr-only">Check icon</span>
-        </div>      
-        <div class="ml-3 text-sm font-normal"> success</div>
-        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg  p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-        </svg>
-        </button>`;
-
-      let errorMsg = "please check the error code";
-      let invalidMsg = "Invalid code";
-
-      const showToast = (msg) => {
-        let toast = document.createElement("div");
-        toast.setAttribute(
-          "class",
-          "w-72 h-12 bg-white font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-green-400 after:animate-bottomslider"
-        );
-        toast.innerHTML = msg;
-
-        if (msg.includes("success")) {
-          toast.setAttribute(
-            "class",
-            "w-72 h-12 bg-green-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-green-400 after:animate-bottomslider"
-          );
-        }
-        if (msg.includes("error")) {
-          toast.setAttribute(
-            "class",
-            "w-72 h-12 bg-red-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-red-400 after:animate-bottomslider"
-          );
-        }
-        if (msg.includes("Invalid")) {
-          toast.setAttribute(
-            "class",
-            "w-72 h-12 bg-orange-200 font-medium mb-5 shadow-sm flex items-center gap-2 px-4 shadow-xl rounded relative  translate-x-full animate-moveleft after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-orange-400 after:animate-bottomslider"
-          );
-        }
-
-        toastBox.appendChild(toast);
-
-        setTimeout(() => {
-          toast.remove();
-        }, 6000);
-      };
-
+    
     const formElements = {
         firstName: document.querySelector("#firstName"),
         lastName: document.querySelector("#lastName"),
@@ -101,8 +53,10 @@ document.addEventListener("DOMContentLoaded", function () {
         image: document.querySelector("#image"),
         roles: document.querySelector("#roles"),
         gender: document.querySelector("#gender"),
+        password: document.querySelector("#password"),
+        confirmPassword: document.querySelector("#confirmPassword"),
     };
-
+    
     // when in put is empty
     const validateNotEmpty = (value, message) =>
         value.trim() === "" ? message : "";
@@ -112,30 +66,40 @@ document.addEventListener("DOMContentLoaded", function () {
         if (value.trim() === "") {
             return "Please enter your age.";
         }
-
+    
         const age = parseInt(value);
-
+    
         if (isNaN(age) || age <= 18) {
             return "Age must be a number greater than 18.";
         }
-
+    
         return "";
     };
-
+    
     // email validation
     const validateEmail = (value) => {
         if (value.trim() === "") {
             return "Please enter your email.";
         } else {
-            return !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
-                value
-            )
-                ? "Please enter a valid email address."
-                : "";
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    
+            if (!emailPattern.test(value)) {
+                return "Please enter a valid email address.";
+            }
+    
+            // Check if the email already exists in localStorage
+            const storedData = localStorageHandler.getData();
+            const emailExists = storedData.some((item) => {
+                return (
+                    item.email.toLowerCase() === value.toLowerCase() &&
+                    item.id !== editId
+                );
+            });
+    
+            return emailExists ? "Email already exists." : "";
         }
     };
-
-
+    
     const validateBloodGroup = (value) => {
         if (value.trim() === "") {
             return "This field is required.";
@@ -147,43 +111,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 : "";
         }
     };
-
+    
     const validatePhoneNumber = (value) => {
         return !/^[6-9]\d{9}$/.test(value)
             ? "Please enter a valid Indian phone number."
             : "";
     };
-
+    
     const validateImage = (value) => {
         const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-
+    
         if (value === "") {
             return "Please select an image";
         }
-
+    
         const extension = value.split(".").pop().toLowerCase();
         if (!allowedExtensions.includes(extension)) {
             return "Please select a valid image file (jpg, jpeg, png, gif).";
         }
-
+    
         return "";
     };
     const validateDOB = (value) => {
         if (value.trim() === "") {
             return "Please enter your date of birth.";
         }
-
+    
         const dob = new Date(value);
         const currentDate = new Date();
         const age = currentDate.getFullYear() - dob.getFullYear();
-
+    
         if (isNaN(age) || age <= 18) {
             return "please match your age";
         }
-
+    
         return "";
     };
-
+    const validateConfirmPassword = (confirmPassword, password) => {
+        return confirmPassword !== password ? "Passwords do not match." : "";
+    };
+    
     const validationRules = {
         firstname: {
             rule: validateNotEmpty,
@@ -227,93 +194,100 @@ document.addEventListener("DOMContentLoaded", function () {
             rule: validateNotEmpty,
             message: "Please select a gender.",
         },
+        password: {
+            rule: validateNotEmpty,
+            message: "Please enter your password and confirmPassword",
+        },
+        confirmPassword: {
+            rule: (value) =>
+                validateConfirmPassword(value, formElements.password.value),
+            message: "Passwords do not match.",
+        },
     };
-
+    
     function validateForm() {
         let isValid = true;
-
+    
         for (const key in formElements) {
             if (formElements.hasOwnProperty(key)) {
                 console.log(formElements[key]);
                 const element = formElements[key];
-
+    
                 console.log(key);
                 const validationError =
-                    key === "image" && editId
-                        ? ""
-                        : validateField(key, element.value);
-
+                    key && editId ? "" : validateField(key, element.value);
+    
                 console.log(validationError);
-
+    
                 if (validationError !== "") {
                     displayError(element, validationError);
                     isValid = false;
                 }
             }
         }
-
+    
         return isValid;
     }
-
+    
     function validateField(key, value) {
         const { rule, message } = validationRules[key.toLowerCase()] || {};
         return rule ? rule(value, message) : "";
     }
-
+    
     function displayError(element, errorMessage) {
         const errorElement = document.getElementById(`error-${element.id}`);
         if (errorElement) {
             errorElement.innerHTML = errorMessage;
         }
     }
-
+    
     const clearError = (element) => {
         const errorElement = document.getElementById(`error-${element.id}`);
         if (errorElement) {
             errorElement.innerHTML = "";
         }
     };
-
+    
     const formSubmission = {
         readFile: function (file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 console.log(reader);
-
+    
                 reader.onload = function () {
                     resolve(reader.result);
                 };
-
+    
                 reader.onerror = function (error) {
                     reject(error);
                 };
-
+    
                 reader.readAsDataURL(file);
             });
         },
-
-        submitForm: async function (editId) {
+    
+        createAndEditForm: async function (editId) {
             // const formData = new FormData()
             // let user  = Object.fromEntries(formData)
             // if(editId) {
-            //     user = editUser   
+            //     user = editUser
             //     user
             // }
-
+    
             for (const key in formElements) {
                 if (formElements.hasOwnProperty(key)) {
                     clearError(formElements[key]);
                 }
             }
             let isValid = validateForm();
-
+    
             if (isValid) {
-                console.log("editId in submitForm:", editId);
+                console.log("editId in createAndEditForm:", editId);
                 let userForm = document.querySelector("#userForm");
                 let formData = new FormData(userForm);
                 let formObject = {};
                 let formId = new Date().getTime();
-
+    
                 for (const [key, value] of formData.entries()) {
                     if (value instanceof File) {
                         if (value.size > 0) {
@@ -333,17 +307,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             const existingImage = existingData?.find(
                                 (item) => item.id == editId.trim()
                             )?.[key];
-
+    
                             formObject[key] = existingImage || null;
                         }
                     } else {
                         formObject[key] = value;
                     }
                 }
-
+    
                 formObject["id"] = editId || formId;
                 console.log("Form data submitted:", formObject);
-
+    
                 // Move updateData outside of the loop to avoid duplicate entries
                 console.log(
                     "Existing data before update:",
@@ -351,36 +325,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
                 console.log("Data to be updated:", formObject);
                 if (editId) {
-                    showToast(success)
+                    showToast("success", "User Updated Successfully");
                     localStorageHandler.updateDataById(formObject);
                 } else {
-                    showToast(successMsg)
+                    showToast("success", "User Added Successfully");
                     localStorageHandler.updateData(formObject);
                     userForm.reset();
                 }
-
-                window.setTimeout(()=>{
+    
+                window.setTimeout(() => {
                     this.redirectPage();
-                },3000)
+                }, 3000);
             }
         },
-
+    
         redirectPage: function () {
-            window.location.href = "table.html";
+            window.location.href = "HomePage.html";
         },
     };
     // formSubmission.validations();
-
+    
     const populateFormFields = (editId) => {
         if (editId) {
             const editedData = localStorageHandler.getData();
             const changableData = editedData?.find(
                 (item) => item.id == editId.trim()
             );
-
+    
             if (changableData) {
                 const form = document.getElementById("userForm");
-
+    
                 for (const key in changableData) {
                     if (changableData.hasOwnProperty(key)) {
                         const element = formElements[key];
@@ -396,16 +370,21 @@ document.addEventListener("DOMContentLoaded", function () {
                                     //     `input[name="${key}"][value="${imageurl}"]`
                                     // );
                                     break;
-
+    
                                 case "checkbox":
                                     const checkboxValue = changableData[key];
                                     element.checked = checkboxValue;
                                     break;
-
+    
                                 case "textarea":
                                     element.value = changableData[key];
                                     break;
-
+    
+                                case "password":
+                                case "confirmPassword":
+                                    // If in edit mode, hide password and confirm password fields
+                                    element.parentElement.style.display = "none";
+                                    break;
                                 default:
                                     element.value = changableData[key];
                                     break;
@@ -413,23 +392,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
                 }
-
+    
                 document.getElementById("btn").innerText = "Update";
             }
         }
     };
-
+    
     const urlParams = new URLSearchParams(window.location.search);
     let editId = urlParams?.get("edit");
     populateFormFields(editId);
-
-    // document.querySelector("#btn").addEventListener("click", function (){
-    //     formSubmission.submitForm(editId)
-    // })
-    document
-        .querySelector("#userForm")
-        .addEventListener("submit", function (e) {
-            e.preventDefault();
-            formSubmission.submitForm(editId);
-        });
-});
+    
+    document.querySelector("#userForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        formSubmission.createAndEditForm(editId);
+    });
+})()

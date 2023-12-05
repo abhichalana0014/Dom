@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       animation:{
-        "bottomslider": "bottomslider 2s linear forwards",
+        "bottomslider": "bottomslider 3s linear forwards",
         "moveleft": "moveleft 1s linear forwards",
       },
       keyframes: {

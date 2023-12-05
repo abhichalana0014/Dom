@@ -6,49 +6,153 @@
         <title>Document</title>
         <link rel="stylesheet" href="../../dist/output.css" />
     </head>
-    <body class="flex items-center justify-center mt-5 bg-gray-100">
-        <div class="container max-w-6xl mx-auto">
-            <div class="flex items-center w-full justify-between mb-2">
-                <div class="w-1/2">
-                    <label for="search_bar_js" class="hidden">searchTask</label>
-                    <input
-                        type="search"
-                        id="search_bar_js"
-                        name="searchTask2"
-                        placeholder="Search Task"
-                        class="px-4 py-1 rounded-md border w-full outline-none"
-                    />
+    <body>
+        <div class="p-4 sm:ml-64">
+            <!-- <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+       <div class="grid grid-cols-3 gap-4 mb-4">
+          <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+       </div>
+       <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+          <p class="text-2xl text-gray-400 dark:text-gray-500">
+             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+             </svg>
+          </p>
+       </div>
+       <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+       </div>
+       <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+          <p class="text-2xl text-gray-400 dark:text-gray-500">
+             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+             </svg>
+          </p>
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+       </div>
+    </div> -->
+            <div class="container max-w-6xl mx-auto">
+                <div class="flex items-center w-full justify-between mb-2">
+                    <div class="w-1/2">
+                        <label for="search_bar_js" class="hidden"
+                            >searchTask</label
+                        >
+                        <input
+                            type="search"
+                            id="search_bar_js"
+                            name="searchTask2"
+                            placeholder="Search Task"
+                            class="px-4 py-1 rounded-md border w-full outline-none"
+                        />
+                    </div>
+                    <div>
+                        <button
+                            type="button"
+                            data-AddNewUser
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        >
+                            Add New User    
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <button
-                        type="button"
-                        data-AddNewUser
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                <div class="relative overflow-x-auto bg-white">
+                    <table
+                        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                     >
-                        Add New User
-                    </button>
+                        <thead
+                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        >
+                            <tr>
+                                <th scope="col" class="px-6 py-3">S NO.</th>
+                                <th scope="col" class="px-6 py-3">Profile</th>
+                                <th scope="col" class="px-6 py-3">Name</th>
+                                <th scope="col" class="px-6 py-3">Email</th>
+                                <th scope="col" class="px-6 py-3">Roles</th>
+                                <th scope="col" class="px-6 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="relative overflow-x-auto bg-white">
-                <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                >
-                    <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                    >
-                        <tr>
-                            <th scope="col" class="px-6 py-3">S NO.</th>
-                            <th scope="col" class="px-6 py-3">Profile</th>
-                            <th scope="col" class="px-6 py-3">Name</th>
-                            <th scope="col" class="px-6 py-3">Email</th>
-                            <th scope="col" class="px-6 py-3">Roles</th>
-                            <th scope="col" class="px-6 py-3">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
             </div>
         </div>
+
         <script>
             (function () {
                 "use strict";
