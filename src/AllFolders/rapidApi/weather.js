@@ -1,3 +1,5 @@
+
+
 import { showToast } from "../FormDataPractice/alert.js";
 
 // import { showToast } from "../FormDataPractice/alert";
@@ -61,38 +63,39 @@ import { showToast } from "../FormDataPractice/alert.js";
         },
 
         async fetchAndStoreData() {
+            
             try {
                 const options = {
                     method: "GET",
                     headers: {
-                        "X-RapidAPI-Key":
-                            "613525450bmshd925704d6df50f5p1940ffjsn62d038c05e64",
-                        "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com",
+                        "X-RapidAPI-Key": 
+                            process.env.RAPID_API_KEY,
+                        "X-RapidAPI-Host": process.env.RAPID_API_HOST,
                         signal : this.abortController.signal,
                     },
                 };
 
-                this.timeoutId = setTimeout(() => {
-                    this.abortController.abort();
-                }, 5000);
+                // this.timeoutId = setTimeout(() => {
+                //     this.abortController.abort();
+                // }, 5000);
 
-                const productResponse = await this.getData(this.url, options);
-                clearTimeout(this.timeoutId);
+                // const productResponse = await this.getData(this.url, options);
+                // clearTimeout(this.timeoutId);
 
-                console.log(productResponse);
-                if (productResponse.error) {
-                    (
-                       console.log( `productResponse Not Fetched: ${productResponse.error}`)
+                // console.log(productResponse);
+                // if (productResponse.error) {
+                //     (
+                //        console.log( `productResponse Not Fetched: ${productResponse.error}`)
                        
-                    );
-                    return;
-                }
+                //     );
+                //     return;
+                // }
 
-                let ProductResponse = productResponse;
-                console.log(ProductResponse);
-                this.updatelocalStorageData(ProductResponse);
+                // let ProductResponse = productResponse;
+                // console.log(ProductResponse);
+                // this.updatelocalStorageData(ProductResponse);
 
-                this.renderProductCards(ProductResponse);
+                // this.renderProductCards(ProductResponse);
             } catch (err) {
                 if ((err.name = "AbortError")) {
                     showToast(
@@ -106,6 +109,7 @@ import { showToast } from "../FormDataPractice/alert.js";
             }
         },
     };
+    console.log("wfkjkghkhgkh");
 
     weatherApi.fetchAndStoreData();
 })();

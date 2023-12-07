@@ -19,26 +19,6 @@
                         <div
                             class="flex items-center justify-start rtl:justify-end"
                         >
-                            <!-- <button
-                                id="hamburger"
-                                type="button"
-                                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                            >
-                                <span class="sr-only">Open sidebar</span>
-                                <svg
-                                    class="w-6 h-6"
-                                    aria-hidden="true"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        clip-rule="evenodd"
-                                        fill-rule="evenodd"
-                                        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-                                    ></path>
-                                </svg>
-                            </button> -->
                             <a class="flex ms-2 md:me-24">
                                 <img
                                     src="https://listerpros.com/hubfs/logo-2%20(2).svg"
@@ -51,8 +31,8 @@
                                 > -->
                             </a>
                         </div>
-                        <div class="flex items-center">
-                            <div class="flex items-center ms-3">
+                        <div class="flex items-center ">
+                            <div class="flex items-center ms-3 gap-4">
                                 <div>
                                     <button
                                         type="button"
@@ -69,6 +49,30 @@
                                             src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                                             alt="user photo"
                                         />
+                                    </button>
+                                </div>
+                                <div>
+                                    <button
+                                        id="cartMenu"
+                                        type="button"
+                                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            aria-hidden="true"
+                                            class="w-6 h-6 relative"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                                            ></path>
+                                        </svg>
+                                        <span id="productcount" class=" absolute top-1/2 right-4  w-5 h-5 flex rounded-full justify-center items-center text-xs bg-red-500  text-white">0</span>
                                     </button>
                                 </div>
                                 <div
@@ -131,12 +135,212 @@
             </nav>
         </header>
 
-        <!-- Main Content -->
+        <!-- Cart Content -->
 
-        <!-- Sidebar (initially hidden on smaller screens) -->
-        
+        <div
+            id="cart"
+            class="relative z-50 mt-20"
+            aria-labelledby="slide-over-title"
+            role="dialog"
+            aria-modal="true"
+        >
+            <!--
+           Background backdrop, show/hide based on slide-over state.
+       
+           Entering: "ease-in-out duration-500"
+             From: "opacity-0"
+             To: "opacity-100"
+           Leaving: "ease-in-out duration-500"
+             From: "opacity-100"
+             To: "opacity-0"
+         -->
+            <div
+                id="Background"
+                class="fixed bg-gray-500 transition opacity-0 ease-in-out duration-500"
+            ></div>
+
+            <div class="fixed  overflow-hidden">
+                <div class="absolute  overflow-hidden">
+                    <div
+                        class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
+                    >
+                        <!--
+                 Slide-over panel, show/hide based on slide-over state.
+       
+                 Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+                   From: "translate-x-full"
+                   To: "translate-x-0"
+                 Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+                   From: "translate-x-0"
+                   To: "translate-x-full"
+               -->
+                        <div
+                            id="js-cartTranslate"
+                            class="pointer-events-auto w-screen max-w-md transform transition translate-x-full ease-in-out duration-500 sm:duration-700"
+                        >
+                            <div
+                                class="flex h-full flex-col bg-white shadow-xl"
+                            >
+                                <div
+                                    class="flex-1 overflow-y-auto px-4 py-6 sm:px-6"
+                                >
+                                    <div
+                                        class="flex items-start justify-between"
+                                    >
+                                        <h2
+                                            class="text-lg font-medium text-gray-900"
+                                            id="slide-over-title"
+                                        >
+                                            Shopping cart
+                                        </h2>
+                                        <div class="ml-3 flex h-7 items-center">
+                                            <button
+                                                type="button"
+                                                id="close-btn"
+                                                class="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                                            >
+                                                <span
+                                                    class="absolute"
+                                                ></span>
+                                                <span class="sr-only"
+                                                    >Close panel</span
+                                                >
+                                                <svg
+                                                    class="h-6 w-6"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M6 18L18 6M6 6l12 12"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8">
+                                        <div class="flow-root">
+                                            <ul
+                                                id="cartlist"
+                                                role="list"
+                                                class="-my-6 divide-y divide-gray-200"
+                                            >
+                                                
+                                                <li class="flex py-6">
+                                                    <div
+                                                        class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+                                                    >
+                                                        <img
+                                                            src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg"
+                                                            alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch."
+                                                            class="h-full w-full object-cover object-center"
+                                                        />
+                                                    </div>
+
+                                                    <div
+                                                        class="ml-4 flex flex-1 flex-col"
+                                                    >
+                                                        <div>
+                                                            <div
+                                                                class="flex justify-between text-base font-medium text-gray-900"
+                                                            >
+                                                                <h3>
+                                                                    <a href="#"
+                                                                        >Medium
+                                                                        Stuff
+                                                                        Satchel</a
+                                                                    >
+                                                                </h3>
+                                                                <p class="ml-4">
+                                                                    $32.00
+                                                                </p>
+                                                            </div>
+                                                            <p
+                                                                class="mt-1 text-sm text-gray-500"
+                                                            >
+                                                                Blue
+                                                            </p>
+                                                        </div>
+                                                        <div
+                                                            class="flex flex-1 items-end justify-between text-sm"
+                                                        >
+                                                            <p
+                                                                class="text-gray-500"
+                                                            >
+                                                                Qty 1
+                                                            </p>
+
+                                                            <div class="flex">
+                                                                <button
+                                                                    type="button"
+                                                                    class="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <!-- More products... -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="border-t border-gray-200 px-4 py-6 sm:px-6"
+                                >
+                                    <div
+                                        class="flex justify-between text-base font-medium text-gray-900"
+                                    >
+                                        <p>Subtotal</p>
+                                        <p>$262.00</p>
+                                    </div>
+                                    <p class="mt-0.5 text-sm text-gray-500">
+                                        Shipping and taxes calculated at
+                                        checkout.
+                                    </p>
+                                    <div class="mt-6">
+                                        <a
+                                            href="#"
+                                            class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                                            >Checkout</a
+                                        >
+                                    </div>
+                                    <div
+                                        class="mt-6 flex justify-center text-center text-sm text-gray-500"
+                                    >
+                                        <p>
+                                            or
+                                            <button
+                                                type="button"
+                                                class="font-medium text-indigo-600 hover:text-indigo-500"
+                                            >
+                                                Continue Shopping
+                                                <span aria-hidden="true">
+                                                    &rarr;</span
+                                                >
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Main product Content  -->
+
         <div class="p-4">
-            <section class="py-10 mt-4 font-poppins dark:bg-gray-800">
+            <section class=" font-poppins dark:bg-gray-800">
                 <div class="max-w-6xl px-4 mx-auto">
                     <div class="flex flex-wrap -mx-4">
                         <div class="w-full px-4 mb-8 md:w-1/2 md:mb-0">
@@ -189,54 +393,6 @@
                                     id="js-imageSlider"
                                     class="flex-wrap hidden -mx-2 md:flex"
                                 >
-                                    <!-- <div class="w-1/2 p-2 sm:w-1/4">
-                                        <a
-                                            class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300"
-                                            href="#"
-                                        >
-                                            <img
-                                                class="object-contain w-full lg:h-28"
-                                                src="https://i.postimg.cc/Z5KhRkD6/download-1-removebg-preview.png"
-                                                alt=""
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="w-1/2 p-2 sm:w-1/4">
-                                        <a
-                                            class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300"
-                                            href="#"
-                                        >
-                                            <img
-                                                class="object-contain w-full lg:h-28"
-                                                src="https://i.postimg.cc/8kJBrw03/download-removebg-preview.png"
-                                                alt=""
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="w-1/2 p-2 sm:w-1/4">
-                                        <a
-                                            class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300"
-                                            href="#"
-                                        >
-                                            <img
-                                                class="object-contain w-full lg:h-28"
-                                                src="https://i.postimg.cc/0jwyVgqz/Microprocessor1-removebg-preview.png"
-                                                alt=""
-                                            />
-                                        </a>
-                                    </div>
-                                    <div class="w-1/2 p-2 sm:w-1/4">
-                                        <a
-                                            class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300"
-                                            href="#"
-                                        >
-                                            <img
-                                                class="object-contain w-full lg:h-28"
-                                                src="https://i.postimg.cc/0N4Kk1PN/black-microprocessors-removebg-preview.png"
-                                                alt=""
-                                            />
-                                        </a>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -327,10 +483,6 @@
                                         class="inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400"
                                     >
                                         <span id="js-price">Rs.7,000.00</span>
-                                        <!-- <span
-                                            class="ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400"
-                                            >Rs.10,000.00</span
-                                        > -->
                                     </p>
                                 </div>
 
@@ -402,12 +554,13 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <a
-                                        href="#"
+                                    <button
+                                        id="Add-to-cart-btn"
+                                        type="button"
                                         class="w-full px-4 py-3 text-center text-blue-600 bg-blue-100 border border-blue-600 dark:hover:bg-gray-900 dark:text-gray-400 dark:border-gray-700 dark:bg-gray-700 hover:bg-blue-600 hover:text-gray-100 lg:w-1/2 rounded-xl"
                                     >
                                         Add to cart
-                                    </a>
+                                    </button>
                                 </div>
                                 <div class="flex gap-4 mb-6">
                                     <a

@@ -1,4 +1,5 @@
 import { showToast } from "./alert.js";
+
 (() => {
     "use strict";
     let allimages = [];
@@ -9,16 +10,102 @@ import { showToast } from "./alert.js";
         timeoutId: null,
         debounceTimeoutId: null,
         productCard: document.getElementById("product-card"),
+        allProducts : [],
+        carts: [],
+        cartlist: document.getElementById("cartlist"),
+        productCount: document.getElementById("productcount"),
+
+
+        async addToCart(product_id){
+            let productIndexPosition = productManager.carts.findIndex((value)=> value.product_id == product_id)
+            if(productManager.carts <= 0){
+                productManager.carts = [{
+                    product_id : product_id,
+                    quantity: 1
+                }]
+            }
+            else if (productIndexPosition < 0 ){
+                productManager.carts.push({
+                    product_id : product_id,
+                    quantity: 1
+                })
+            }
+            else{
+                productManager.carts[productIndexPosition].quantity += 1
+            }
+            console.log(productManager.carts)
+            this.addCartProductData(productManager.carts)
+            this.renderCartProducts()
+        },
+
+        renderCartProducts(){
+            this.cartlist.innerHTML = "";
+            let totalQuantity = 0
+            if(productManager.carts.length > 0 ){
+                productManager.carts.forEach((item)=>{
+                    totalQuantity += item.quantity
+                    let cartproduct = document.createElement("li");
+                    cartproduct.classList.add("flex","py-6");
+                    // let productInfo = this.getLocalStorageData();
+                    let positionProduct = this.allProducts.findIndex((value)=> value.id == item.product_id)
+                    let _item = this.allProducts[positionProduct];
+                    console.log(_item)
+                    cartproduct.innerHTML = ` 
+                    <div
+                        class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+                    >
+                        <img
+                            src="${_item.thumbnail}"
+                            alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                            class="h-full w-full object-cover object-center"
+                        />
+                    </div>
+            
+                    <div class="ml-4 flex flex-1 flex-col">
+                        <div>
+                            <div
+                                class="flex justify-between text-base font-medium text-gray-900"
+                            >
+                                <h3>
+                                    <a href="#">${_item.title}</a>
+                                </h3>
+                                <p class="ml-4">$ ${_item.price * item.quantity}</p>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">${_item.description.slice(0,20)}</p>
+                        </div>
+                        <div class="flex flex-1 items-end justify-between text-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 text-center h-full text-gray-600 bg-gray-100 border-r rounded-l outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-300">+</span>
+                                <span class="text-gray-500">${item.quantity}</span>
+                                <span class ="w-5 text-center h-full text-gray-600 bg-gray-100 border-l rounded-r outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-300">-</span>
+                            </div>
+                
+                            <div class="flex">
+                                <button
+                                    type="button"
+                                    class="font-medium text-indigo-600 hover:text-indigo-500"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    this.cartlist.appendChild(cartproduct);
+                })
+            }
+            this.productCount.innerText = totalQuantity;
+        },
 
         getLocalStorageData: function () {
             return JSON.parse(localStorage.getItem("products")) || [];
         },
 
         updatelocalStorageData: function (data) {
-            localStorage.setItem(
-                "products",
-                JSON.stringify(data)
-            );
+            localStorage.setItem("products", JSON.stringify(data));
+        },
+        addCartProductData: function (data){
+            localStorage.setItem("cart", JSON.stringify(data));
         },
 
         async getData(url, signal) {
@@ -64,14 +151,14 @@ import { showToast } from "./alert.js";
         },
 
         async renderProductCards(data) {
-            let products = data ? data : this.getLocalStorageData();
+            let products = data ? data : this.allProducts;
             console.log(products);
 
             this.productCard.innerHTML = "";
 
             await products.map((item) => {
                 this.productCard.innerHTML += `
-                <li class="w-full max-w-sm flex gap-4 rounded">
+                <li data-id=${item.id} class="w-full max-w-sm flex gap-4 rounded">
                     <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <div class="h-48 w-full">
                             <a href="http://127.0.0.1:5500/src/FormDataPractice/productId.html?id=${item.id}">
@@ -102,17 +189,27 @@ import { showToast } from "./alert.js";
                                 </div>
                                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
                             </div>
+                            
                             <div class="flex items-center justify-between">
                                 <span class="text-3xl font-bold text-gray-900 dark:text-white">₹${item.price}</span>
-                                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Add to cart</button>
+                                <button class="AddToCart text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> Add to cart</button>
                             </div>
-                            
                         </div>
                     </div>
                 </li>
             `;
             });
+            this.productCard.addEventListener("click", (event) => {
+                let positionclick = event.target;
+                if (positionclick.classList.contains("AddToCart")) {
+                    let product_id = positionclick.closest("li").getAttribute("data-id")
+                    console.log(product_id)
+                    this.addToCart(product_id)
+                }
+            });
         },
+
+        
 
         async fetchAndStoreData() {
             try {
@@ -135,10 +232,17 @@ import { showToast } from "./alert.js";
                 }
 
                 let ProductResponse = productResponse.products;
-                console.log(ProductResponse);
+                // console.log(ProductResponse);
+                this.allProducts = ProductResponse;
+                if(localStorage.getItem("cart")){
+                    this.carts = JSON.parse(localStorage.getItem("cart"))
+                    this.renderCartProducts();
+                }
+
+                console.log(this.allProducts);
                 this.updatelocalStorageData(ProductResponse);
 
-                this.renderProductCards(ProductResponse);
+                this.renderProductCards();
             } catch (err) {
                 if ((err.name = "AbortError")) {
                     showToast(
@@ -153,12 +257,14 @@ import { showToast } from "./alert.js";
         },
 
         readFile: function () {
-            document.getElementById("images").addEventListener("change", function() {
-                let files = this.files;
-                allimages = [];
+            document
+                .getElementById("images")
+                .addEventListener("change", function () {
+                    let files = this.files;
+                    allimages = [];
 
-                for (let i = 0; i < files.length; i++) {
-                    // return new Promise((resolve, reject) => {
+                    for (let i = 0; i < files.length; i++) {
+                        // return new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         console.log(reader);
 
@@ -171,30 +277,29 @@ import { showToast } from "./alert.js";
                         // };
 
                         reader.readAsDataURL(files[i]);
-                    // });
-                }
-            });
+                        // });
+                    }
+                });
 
             document
                 .getElementById("thumbnail")
                 .addEventListener("change", function () {
-
                     let file = this.files[0];
-                    console.log(file)
+                    console.log(file);
                     // return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        console.log(reader);
+                    const reader = new FileReader();
+                    console.log(reader);
 
-                        reader.onload = function (e) {
-                             thumbnailUrl = e.target.result
-                            // resolve(thumbnailUrl)
-                        };
+                    reader.onload = function (e) {
+                        thumbnailUrl = e.target.result;
+                        // resolve(thumbnailUrl)
+                    };
 
-                        // reader.onerror = function (error) {
-                        //     reject(error);
-                        // };
+                    // reader.onerror = function (error) {
+                    //     reject(error);
+                    // };
 
-                        reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
                     // });
                 });
         },
@@ -278,6 +383,31 @@ import { showToast } from "./alert.js";
 
             return toggleModal;
         },
+
+        handleCartToggle() {
+            const Background = document.getElementById("Background");
+            const carthandle = document.getElementById("js-cartTranslate");
+            const closeCartButton = document.getElementById("close-btn");
+            const cartOverlay = document.getElementById("Background");
+
+            const handleCart = () => {
+                Background.classList.toggle("opacity-40");
+                Background.classList.toggle("inset-0");
+                carthandle.classList.toggle("translate-x-0");
+                carthandle.classList.toggle("translate-x-full");
+            };
+
+            closeCartButton.addEventListener("click", handleCart);
+
+            cartOverlay.addEventListener("click", (e) => {
+                if (e.target === cartOverlay) {
+                    handleCart();
+                }
+            });
+
+            return handleCart;
+        },
+
         bind() {
             this.readFile();
             document
@@ -291,7 +421,7 @@ import { showToast } from "./alert.js";
             document
                 .getElementById("hamburger")
                 .addEventListener("click", function () {
-                    var sidebar = document.getElementById("sidebar");
+                    let sidebar = document.getElementById("sidebar");
                     sidebar.classList.toggle("-translate-x-full");
                     sidebar.classList.toggle("translate-x-0");
                 });
@@ -315,6 +445,11 @@ import { showToast } from "./alert.js";
 
                     modal.classList.add("hidden");
                 });
+            // handle cart system
+            const cartToggle = this.handleCartToggle();
+            document
+                .getElementById("cartMenu")
+                .addEventListener("click", cartToggle);
         },
 
         useDebouncing(searchValue) {
@@ -333,6 +468,7 @@ import { showToast } from "./alert.js";
                     return;
                 }
                 if (searchValue === "") {
+                    console.log(this.allProducts)
                 }
                 let searchUrl = `${this.apiUrl}/search?q=${searchValue}`;
                 console.log(searchUrl);

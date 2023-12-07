@@ -9,9 +9,33 @@ import { showToast } from "./alert.js";
         imageSlider: document.getElementById("js-imageSlider"),
         thumbnail: document.getElementById("js-thumbnail"),
         apiUrl: "https://dummyjson.com/products",
-        params: new URLSearchParams(window.location.search),
+        productId: new URLSearchParams(window.location.search).get("id"),
         abortController: new AbortController(),
         timeoutId: null,
+        carts: [],
+        cartlist: document.getElementById("cartlist"),
+        productCount: document.getElementById("productcount"),
+
+        async addToCart(){
+
+            let productIndexPosition = productPage.carts.findIndex((value)=> value.product_id == productPage.productId)
+            if(productPage.carts <= 0){
+                productPage.carts = [{
+                    product_id : productPage.productId,
+                    quantity: 1
+                }]
+            }
+            else if (productIndexPosition < 0 ){
+                productPage.carts = [{
+                    product_id : productPage.productId,
+                    quantity: 1
+                }]
+            }
+            else{
+                productPage.carts[productIndexPosition].quantity += 1
+            }
+            console.log(productPage.carts)
+        },
 
         async getData(url, signal) {
             try {
@@ -35,10 +59,9 @@ import { showToast } from "./alert.js";
             try {
                 let signal = this.abortController.signal;
 
-                const productId = this.params.get("id");
-                console.log(productId);
+                console.log(this.productId)
 
-                let productUrl = `${this.apiUrl}/${productId}`;
+                let productUrl = `${this.apiUrl}/${this.productId}`;
 
                 this.timeoutId = setTimeout(() => {
                     this.abortController.abort();
@@ -100,6 +123,51 @@ import { showToast } from "./alert.js";
                 });
             });
         },
+        handleCartToggle() {
+            const Background = document.getElementById("Background");
+            const carthandle = document.getElementById("js-cartTranslate");
+            const closeCartButton = document.getElementById("close-btn");
+            const cartOverlay = document.getElementById("Background");
+
+
+            const handleCart = () => {
+                Background.classList.toggle("opacity-40");
+                Background.classList.toggle("inset-0");
+                carthandle.classList.toggle("translate-x-0");
+                carthandle.classList.toggle("translate-x-full");
+            };
+
+            closeCartButton.addEventListener("click", handleCart);
+
+            cartOverlay.addEventListener("click", (e)=>{
+                if(e.target === cartOverlay){
+                    handleCart();
+                }
+            })
+
+            return handleCart;
+        },
+
+       
+
+        bind(){
+            // handle cart system
+            const cartToggle = this.handleCartToggle();
+            document
+                .getElementById("cartMenu")
+                .addEventListener("click", cartToggle);
+
+            // handle add product to cart
+            document.getElementById("Add-to-cart-btn").addEventListener("click", this.addToCart)
+
+        },
+            
+
+
+        init(){
+            this.productView()
+            this.bind()
+        },
     };
-    productPage.productView();
+    productPage.init();
 })();
