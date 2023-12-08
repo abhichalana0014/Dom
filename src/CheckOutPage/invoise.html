@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="../../dist/output.css" />
+    </head>
+    <body >
+        <main class="h-screen">
+            <div
+            class="bg-white border rounded-lg shadow-lg px-6 py-8 max-w-md mx-auto mt-8"
+        >
+            <h1 class="font-bold text-2xl my-4 text-center text-blue-600">
+                Order Reciept
+            </h1>
+            <hr class="mb-2" />
+            <div class="flex justify-between mb-6">
+                <h1 class="text-lg font-bold">Invoice</h1>
+                <div class="text-gray-700">
+                    <div id="js-date">Date: 01/05/2023</div>
+                    <div id="js-orderid">OrderId: INV12345</div>
+                </div>
+            </div>
+            <div class="mb-8">
+                <h2 id="js-bill-heading" class="text-lg font-bold mb-4">Bill To:</h2>
+                <div id="js-name" class="text-gray-700 mb-2">John Doe</div>
+                <div id="js-address" class="text-gray-700 mb-2">123 Main St.</div>
+                <div id="js-city-state-zipcode" class="text-gray-700 mb-2">Anytown, USA 12345</div>
+                <div id="js-phone" class="text-gray-700">9781999236</div>
+            </div>
+            <div class="mt-4 sm:pr-4 sm:border-r-0">
+                <div class="flex mt-4 bg-white rounded-lg p-4 flex-col">
+                    <h1 class="text-2xl font-semibold">orderDetail</h1>
+                    <ul id="product-list" class="divide-y mt-4 divide-gray-200 w-full">
+                        <!-- Products -->
+                    </ul>
+                    
+                    <div class="border-t border-gray-200 w-full py-6 sm:px-6">
+                        <div class="flex justify-between text-base font-medium text-gray-900">
+                            <p>Subtotal</p>
+                            <p id="subtotalAmount">₹ 0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-gray-700 mb-2">Thank you for your business!</div>
+            <div class="text-gray-700 text-sm">
+                Please remit payment within 30 days.
+            </div>
+        </div>
+        </main>
+        <script type="module" src="./invoise.js"></script>
+    </body>
+</html>
